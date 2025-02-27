@@ -1,17 +1,17 @@
 # Emporix module
 
-## Intrudoction
+## Introduction
 
-This is a module template for the Emporix platform. It is a React application that is built with Vite. It is based on module federation concept descirbed here: https://github.com/originjs/vite-plugin-federation
+This is a module template designed for the Emporix platform. It is a React application that is built with Vite. It is based on the module federation concept described in [vite-plugin-deferation](https://github.com/originjs/vite-plugin-federation) repository.
 
-This implemetation is also a simple example of a module with most common use cases
+This implementation is a simple example of a module built for most common use cases.
 
-The main goal was to provide a minimal setup for a module that can be used as a starting point for a new module.
+The main goal was to provide a minimal setup for a module that can be used as a starting point for a more complex modules.
 
 ## Development
 
 ### Prerequisites
-To get started, you need to install the dependencies:
+To get started, install the dependencies:
 
 ```bash
 npm install
@@ -19,7 +19,7 @@ npm install
 
 ### Testing module
 
-To test it locally with Emporix Managment Dashboard you need to build the project:
+To test it locally with the Emporix Management Dashboard, build the project:
 
 #### Development enviroment
 ```bash
@@ -35,12 +35,12 @@ npm run build:stage
 npm run build
 ```
 
-and then start local server:
+and then start the local server:
 ```bash
 npm run preview
 ```
 
-You also need to add the module to Dashboard:
+You also need to add the module to the Management Dashboard:
 - open the Dashboard
 - go to `Administration/Extensions` page
 - click `ADD NEW EXTENSION` button
@@ -49,12 +49,15 @@ You also need to add the module to Dashboard:
 - provide the URL to the `remoteEntry.js` file (`http://localhost:4173/remoteEntry.js`)
 - add package name for the module (e.g. `orders-module`)
 
+You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/user-guides/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides](https://developer.emporix.io/user-guides/management-dashboard/extensions/extensions).
+
 ### Deploying
 
-In order to use the module in Emporix Managment Dashboard, you need to deploy it to a hosting service and then provide the URL to the `remoteEntry.js` in the Emporix Managment Dashboard.
+In order to use the module in the Emporix Management Dashboard, deploy it to a hosting service and then provide the URL to the `remoteEntry.js` in the Emporix Management Dashboard.
 
 ### Testing standalone module
-This project can be run locally outside of Managment Dashboard using following command:
+This project can be run locally outside of Management Dashboard using the following command:
+
 #### Development enviroment
 ```bash
 npm run dev
@@ -64,17 +67,15 @@ npm run dev
 npm run dev:stage
 ```
 
-You will be requested to provide app context on start:
+You will be requested to provide app context on the start:
 - tenant name
 - auth token (JWT token)
 - language  ('en' or 'de')
 
 ## Customizing the module
 
-This module tempalte uses PrimeReact (https://www.primefaces.org/primereact-v8) for UI components and PrimeFlex
-(https://primeflex.org) for styling
-
-Default styling is inherited from Managment Dashboard.
+This module template uses [PrimeReact](https://www.primefaces.org/primereact-v8) for UI components and [PrimeFlex](https://primeflex.org) for styling.
+But, the default styling is inherited from the Management Dashboard.
 
 You are free to use your own UI libraries or styling.
 If so, you can remove PrimeReact and PrimeFlex from the package.json file.
@@ -93,7 +94,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css' //theme
 import 'primereact/resources/primereact.min.css' //core css
 import 'primeicons/primeicons.css'
 ```
-and all occurances in the component.
+and all occurrences in the component.
 
 and also from `RemoteComponent.tsx` file remove:
 ```bash

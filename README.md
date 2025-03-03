@@ -1,4 +1,4 @@
-# Emporix module
+# Emporix extension module
 
 ## Introduction
 

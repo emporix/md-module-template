@@ -21,6 +21,7 @@ const RemoteComponent = ({
   },
 }: RemoteComponentProps) => {
   const { i18n } = useTranslation()
+
   useEffect(() => {
     i18n.changeLanguage(appState.language)
   }, [appState.language, i18n])

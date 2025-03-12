@@ -21,12 +21,7 @@ function App() {
   }
 
   return (
-    <div className='flex h-full' >
-      <div style={{ minWidth: '307px', maxWidth: '307px' }}>
-        <img className='' src='https://i.ibb.co/HDQRqxRT/image.png' />
-      </div>
-      <RemoteComponent appState={appState} />
-    </div>
+    <RemoteComponent appState={appState} />
   )
 }
 

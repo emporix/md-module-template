@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router'
 import { useEffect, useState } from 'react'
-import { Column, DataTable } from 'primereact'
-import { useDashboardContext } from './context/Dashboard.context'
-import { Product } from './models/Product.model'
+import { Column } from 'primereact/column'
+import { DataTable } from 'primereact/datatable'
+import { useDashboardContext } from '../context/Dashboard.context'
+import { Product } from '../models/Product.model'
 import { useTranslation } from 'react-i18next'
-import { fetchProducts } from './api'
+import { fetchProducts } from '../api'
 
 const List = () => {
   const { t } = useTranslation()
@@ -14,7 +15,7 @@ const List = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       setIsLoading(true)
       const products = await fetchProducts(tenant, token)
       setProducts(products)

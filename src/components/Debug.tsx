@@ -1,6 +1,5 @@
 import { Table } from '@tanstack/react-table'
 import { JsonView, allExpanded, defaultStyles } from 'react-json-view-lite'
-import 'react-json-view-lite/dist/index.css'
 
 interface DebugPanelProps {
   table: Table<any>

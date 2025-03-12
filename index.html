@@ -6,6 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Emporix module</title>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js'
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: 'AIzaSyBcQKEg3JkmMAJh2x6_So5H3J8UeHni4DA',
+        authDomain: 'extension-96a6f.firebaseapp.com',
+        projectId: 'extension-96a6f',
+        storageBucket: 'extension-96a6f.firebasestorage.app',
+        messagingSenderId: '1031415822853',
+        appId: '1:1031415822853:web:22811fb93742709db97a6c',
+      }
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig)
+    </script>
   </head>
   <body>
     <div id="root"></div>

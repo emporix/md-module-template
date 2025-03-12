@@ -11,14 +11,7 @@ export default defineConfig({
       exposes: {
         './RemoteComponent': './src/RemoteComponent',
       },
-      shared: [
-        'react',
-        'react-dom',
-        'react-router',
-        'react-i18next',
-        'chart.js',
-        'quill',
-      ],
+      shared: ['react', 'react-dom', 'react-router', 'react-i18next'],
     }),
   ],
   build: {

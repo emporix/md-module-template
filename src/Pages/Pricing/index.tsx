@@ -1,24 +1,28 @@
 // import { useNavigate } from 'react-router'
-import { useEffect, useState } from 'react'
-import { useDashboardContext } from '../context/Dashboard.context'
-import { Product } from '../models/Product.model'
 // import { useTranslation } from 'react-i18next'
-import { fetchPriceLists } from '../api'
-import { Table } from '../herffjones/ProductTable'
-import 'react-day-picker/style.css'
+import { useEffect, useState } from 'react'
+import { useDashboardContext } from '../../context/Dashboard.context'
+import { fetchPriceLists } from '../../api'
+import { Table } from '../../herffjones/PricingTable'
 
-const Pricing = () => {
+interface PriceList {
+  id: string;
+  name: string;
+}
+
+const PagePricing = () => {
   // const { t } = useTranslation()
   // const navigate = useNavigate()
   const { token, tenant } = useDashboardContext()
-  const [priceLists, setPriceLists] = useState([])
+  // Properly type the state
+  const [priceLists, setPriceLists] = useState<PriceList[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     ; (async () => {
       setIsLoading(true)
       const lists = await fetchPriceLists(tenant, token)
-      setPriceLists(lists)
+      setPriceLists(lists as PriceList[])
       setIsLoading(false)
     })()
   }, [token, tenant])
@@ -32,9 +36,15 @@ const Pricing = () => {
           ADD PRICE LIST
         </button>
       </div>
-      {/* <Table data={priceLists} /> */}
+      {isLoading ? (
+        <div className="flex justify-center items-center py-10">
+          <div className="w-10 h-10 rounded-full border-b-2 border-sky-500 animate-spin"></div>
+        </div>
+      ) : (
+        <Table data={priceLists} />
+      )}
     </div>
   )
 }
 
-export default Pricing
+export default PagePricing

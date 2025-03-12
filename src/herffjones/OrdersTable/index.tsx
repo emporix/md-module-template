@@ -12,7 +12,6 @@ import {
   GroupingState,
   ExpandedState,
 } from '@tanstack/react-table'
-import 'react-day-picker/style.css'
 import { productColumns } from './columns'
 import { TableComponent } from '../../components/table'
 

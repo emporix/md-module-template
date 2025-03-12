@@ -1,13 +1,12 @@
 // import { useNavigate } from 'react-router'
 import { useEffect, useState } from 'react'
-import { useDashboardContext } from '../context/Dashboard.context'
-import { Product } from '../models/Product.model'
+import { useDashboardContext } from '../../context/Dashboard.context'
+import { Product } from '../../models/Product.model'
 // import { useTranslation } from 'react-i18next'
-import { fetchProducts } from '../api'
-import { Table } from '../herffjones/ProductTable'
-import 'react-day-picker/style.css'
+import { fetchProducts } from '../../api'
+import { Table } from '../../herffjones/ProductTable'
 
-const Products = () => {
+const PageProducts = () => {
   // const { t } = useTranslation()
   // const navigate = useNavigate()
   const { token, tenant } = useDashboardContext()
@@ -32,9 +31,15 @@ const Products = () => {
           ADD PRODUCT
         </button>
       </div>
-      <Table data={products} />
+      {isLoading ? (
+        <div className="flex justify-center items-center py-10">
+          <div className="w-10 h-10 rounded-full border-b-2 border-sky-500 animate-spin"></div>
+        </div>
+      ) : (
+        <Table data={products} />
+      )}
     </div>
   )
 }
 
-export default Products
+export default PageProducts

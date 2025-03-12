@@ -1,0 +1,53 @@
+dlaczego usuwac remote component?
+
+Then remove import statements from the `App.tsx` file:
+```bash
+import RemoteComponent from './RemoteComponent'
+import { Button, Card, InputText } from 'primereact'
+import 'primereact/resources/themes/lara-light-indigo/theme.css' //theme
+import 'primereact/resources/primereact.min.css' //core css
+import 'primeicons/primeicons.css'
+```
+
+----
+
+w przypadku usuniecia prime info o usunieciu tez 
+
+'chart.js',
+'quill',
+
+tutaj
+
+
+
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import federation from '@originjs/vite-plugin-federation'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    federation({
+      name: 'extension',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './RemoteComponent': './src/RemoteComponent',
+      },
+      shared: [
+        'react',
+        'react-dom',
+        'react-router',
+        'react-i18next',
+        'chart.js',
+        'quill',
+      ],
+    }),
+  ],
+  build: {
+    modulePreload: false,
+    target: 'esnext',
+    minify: false,
+    cssCodeSplit: false,
+  },
+})
+

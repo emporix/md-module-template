@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router'
-import { fetchProduct } from './api'
-import { useDashboardContext } from './context/Dashboard.context'
-import { Product } from './models/Product.model'
+import { fetchProduct } from '../../api'
+import { useDashboardContext } from '../../context/Dashboard.context'
+import { Product } from '../../models/Product.model'
 
 const Detail = () => {
   const { productId } = useParams()
@@ -10,7 +10,7 @@ const Detail = () => {
   const [product, setProduct] = useState<Product | null>(null)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       if (!productId) return
       const product = await fetchProduct(tenant, token, productId)
       setProduct(product)
@@ -23,7 +23,7 @@ const Detail = () => {
       <NavLink to="/">Back</NavLink>
       <h1 className="my-8">{product.name}</h1>
       <img src={product?.media[0].url} alt={product?.name} className="w-6" />
-      <p className="w-6 mt-8">{product?.description}</p>
+      <p className="mt-8 w-6">{product?.description}</p>
     </div>
   )
 }

@@ -6,7 +6,7 @@ This is a module template designed for the Emporix platform. It is a React appli
 
 This implementation is a simple example of a module built for most common use cases.
 
-The main goal was to provide a minimal setup for a module that can be used as a starting point for a more complex modules.
+The main goal was to provide a minimal setup for a module that can be used as a starting point for more complex modules.
 
 ## Development
 

@@ -10,7 +10,9 @@
     "build:stage": "tsc -b && vite build --mode stage",
     "build": "tsc -b && vite build --mode prod",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "tsc -b && vite build --mode prod && firebase deploy --only hosting:herffjanes --config firebase.json --project stage-2-7beeb"
+  
   },
   "dependencies": {
     "@originjs/vite-plugin-federation": "^1.3.9",

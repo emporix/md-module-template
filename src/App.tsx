@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import RemoteComponent from './RemoteComponent'
 import LoginDialog from './components/Login'
+import styles from './styles.css'
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(true)

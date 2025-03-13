@@ -13,7 +13,7 @@ import {
   ExpandedState,
 } from '@tanstack/react-table'
 import { columns } from './columns'
-import { TableComponent } from '../../components/table'
+import { TableComponent } from '../../ui/table'
 
 export function Table({ data }: { data?: any }) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -34,13 +34,16 @@ export function Table({ data }: { data?: any }) {
       expanded,
       rowSelection,
     },
+    // State change handlers
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onGroupingChange: setGrouping,
     onExpandedChange: setExpanded,
     onRowSelectionChange: setRowSelection,
+    // Features configuration
     enableRowSelection: true,
+    // Row models
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

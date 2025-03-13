@@ -16,7 +16,7 @@ export function Intro() {
             <Select
               className="w-150 z-1" // Doubled the width from default 100px
               classNamePrefix="select"
-              defaultValue={colourOptions[0]}
+              // defaultValue={colourOptions[0]}
               isDisabled={false}
               isLoading={false}
               isClearable={true}

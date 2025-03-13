@@ -39,16 +39,17 @@ export const columns = [
     maxSize: 4,
     cell: (props) => {
       const { row } = props
+      const className = 'object-contain mx-auto w-8 bg-gray-200'
       const media = row.original.media?.[0]
 
       return media ? (
         <img
           src={media.url}
           alt={media.customAttributes.name}
-          className="object-contain w-16 h-16"
+          className={className}
         />
       ) : (
-        <img src='https://admin.emporix.io/assets/logo-dark-ClNMg49p.png' />
+        <img className={className} src='https://admin.emporix.io/assets/logo-dark-ClNMg49p.png' />
       )
     },
   }),
@@ -68,13 +69,11 @@ export const columns = [
     header: 'Type',
     cell: info => info.getValue(),
   }),
-
-
-  // columnHelper.display({
-  //   id: 'price',
-  //   header: 'Price',
-  //   cell: info => info.getValue(),
-  // }),
+  columnHelper.display({
+    id: 'price',
+    header: 'Price',
+    cell: info => info.getValue(),
+  }),
   // columnHelper.accessor('published', {
   //   header: 'Published',
   //   cell: info => info.getValue() ? 'Yes' : 'No',

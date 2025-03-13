@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 import { Table } from '@tanstack/react-table'
-import { ToggleButton } from './table/Button'
+import { ToggleButton } from '../ui/table/Button'
 
 interface SettingsProps {
   className?: string

@@ -27,22 +27,25 @@ export function renderTableSection(
           : undefined
       }
     >
-      {header.isPlaceholder
-        ? null
-        : flexRender(
-          type === 'header' ? header.column.columnDef.header : header.column.columnDef.footer,
-          header.getContext()
-        )}
-      {{
-        asc: ' 🔼',
-        desc: ' 🔽',
-      }[header.column.getIsSorted() as string] ?? null}
+      <div className='flex gap-2 items-center'>
+        {header.isPlaceholder
+          ? null
+          : flexRender(
+            type === 'header' ? header.column.columnDef.header : header.column.columnDef.footer,
+            header.getContext()
+          )}
+        {{
+          // asc: <img src='https://i.ibb.co/WvHXVnfW/image.png' />,
+          asc: <img className='h-4' src='https://i.ibb.co/ccpmDBdR/image.png' />,
+          desc: <img className='h-4' src='https://i.ibb.co/zHX9V4SG/image.png' />,
+        }[header.column.getIsSorted() as string] ?? null}
+      </div>
     </th>
   );
 
   if (type === 'header') {
     return (
-      <thead className='bg-gray-100'>
+      <thead>
         {table.getHeaderGroups().map(headerGroup => (
           <Fragment key={headerGroup.id}>
             <tr>

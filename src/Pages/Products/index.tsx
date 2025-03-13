@@ -24,13 +24,14 @@ const PageProducts = () => {
 
   return (
     <div className='flex flex-col gap-4 px-10 w-full bg-gray-50'>
-      <div className="flex justify-between items-center">
+      <img src='https://i.ibb.co/Gvhtthjy/image.png' />
+      {/* <div className="flex justify-between items-center">
         <h3 className='text-3xl font-medium text-gray-800'>Prices</h3>
         <button
           className="px-6 py-1.5 text-sm text-white border border-transparent transition-colors bg-gradient-to-b from-sky-400 to-sky-600 hover:from-sky-500 hover:to-sky-700">
           ADD PRODUCT
         </button>
-      </div>
+      </div> */}
       {isLoading ? (
         <div className="flex justify-center items-center py-10">
           <div className="w-10 h-10 rounded-full border-b-2 border-sky-500 animate-spin"></div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import RemoteComponent from './RemoteComponent'
-import LoginDialog from './components/Login'
+import { RemoteComponent } from './RemoteComponent'
+import { LoginDialog } from './components/Login'
+import './App.css'
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(true)
@@ -20,7 +21,12 @@ function App() {
   }
 
   return (
-    <RemoteComponent appState={appState} />
+    <div className='flex h-full' >
+      <div style={{ minWidth: '307px', maxWidth: '307px' }}>
+        <img className='fixed top-0' style={{ minWidth: '307px', maxWidth: '307px' }} src='https://i.ibb.co/HDQRqxRT/image.png' />
+      </div>
+      <RemoteComponent appState={appState} />
+    </div>
   )
 }
 

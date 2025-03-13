@@ -36,7 +36,6 @@ export const productColumns = [
   columnHelper.display({
     id: 'image',
     header: 'Image',
-    maxSize: 4,
     cell: (props) => {
       const { row } = props
       const media = row.original.media?.[0]

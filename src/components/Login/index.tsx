@@ -4,7 +4,7 @@ interface LoginDialogProps {
   onSave: (tenant: string, language: string, token: string) => void
 }
 
-function LoginDialog({ onSave }: LoginDialogProps) {
+export function LoginDialog({ onSave }: LoginDialogProps) {
   const [tenant, setTenant] = useState('')
   const [language, setLanguage] = useState('en')
   const [token, setToken] = useState('')
@@ -47,14 +47,14 @@ function LoginDialog({ onSave }: LoginDialogProps) {
 
   // TYMCZASOWE: Automatyczne wysyłanie formularza po odświeżeniu strony
   // Usuń ten kod po zakończeniu testów
-  // useEffect(() => {
-  //   const autoSubmit = localStorage.getItem('autoSubmit')
-  //   if (autoSubmit === 'true' && tenant && token) {
-  //     handleSave()
-  //   } else {
-  //     localStorage.setItem('autoSubmit', 'true')
-  //   }
-  // }, [tenant, token])
+  useEffect(() => {
+    const autoSubmit = localStorage.getItem('autoSubmit')
+    if (autoSubmit === 'true' && tenant && token) {
+      handleSave()
+    } else {
+      localStorage.setItem('autoSubmit', 'true')
+    }
+  }, [tenant, token])
 
   return (
     <div className="flex justify-center items-center p-4 min-h-screen bg-gradient-to-br from-sky-50 to-indigo-50">
@@ -133,7 +133,6 @@ function LoginDialog({ onSave }: LoginDialogProps) {
               Sign in
             </button>
 
-            {/* TYMCZASOWE: Informacja o automatycznym wysyłaniu */}
             <div className="p-4 text-sm text-amber-700 bg-amber-50 rounded-lg border border-amber-200">
               <div className="flex items-start">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="flex-shrink-0 mr-2 w-5 h-5">
@@ -148,5 +147,3 @@ function LoginDialog({ onSave }: LoginDialogProps) {
     </div>
   )
 }
-
-export default LoginDialog

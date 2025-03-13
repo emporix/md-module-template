@@ -4,7 +4,7 @@ import { HashRouter, Routes, Route } from 'react-router'
 import Intro from './Pages/Intro'
 import Products from './Pages/Products'
 import Prices from './Pages/Pricing'
-import Detail from './components/Detail'
+// import Detail from './components/Detail'
 import { AppState } from './models/AppState.model'
 import { DashboardProvider } from './context/Dashboard.context'
 import './translations/i18n'
@@ -14,7 +14,7 @@ interface RemoteComponentProps {
   appState?: AppState
 }
 
-const RemoteComponent = ({
+export const RemoteComponent = ({
   appState = {
     tenant: 'default',
     language: 'default',
@@ -35,7 +35,7 @@ const RemoteComponent = ({
             <Route index element={<Intro />} />
             <Route path="/products" element={<Products />} />
             <Route path="/pricing" element={<Prices />} />
-            <Route path="/:productId" element={<Detail />} />
+            {/* <Route path="/:productId" element={<Detail />} /> */}
             <Route path="*" element={<div>Not Found</div>} />
           </Route>
         </Routes>

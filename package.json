@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:stage": "vite --mode stage",
+    "build:watch": "tsc -b && vite build --mode dev --watch",
     "build:dev": "tsc -b && vite build --mode dev",
     "build:stage": "tsc -b && vite build --mode stage",
     "build": "tsc -b && vite build --mode prod",

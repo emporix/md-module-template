@@ -55,6 +55,29 @@ You can find the Management Dashboard extensions documentation at [Administratio
 
 In order to use the module in the Emporix Management Dashboard, deploy it to a hosting service and then provide the URL to the `remoteEntry.js` in the Emporix Management Dashboard.
 
+App hosting should have CORS set up to allow the module to be loaded from emporix domain.
+Example of CORS configuration for Firebase hosting:
+
+```json
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ### Testing standalone module
 This project can be run locally outside of Management Dashboard using the following command:
 

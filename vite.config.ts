@@ -27,4 +27,20 @@ export default defineConfig({
     minify: false,
     cssCodeSplit: false,
   },
+  server: {
+    cors: {
+      origin: [
+        'https://admin.emporix.io'
+      ],
+      credentials: true,
+    },
+  },
+  preview: {
+    cors: {
+      origin: [
+        'https://admin.emporix.io'
+      ],
+      credentials: true,
+    },
+  }
 })

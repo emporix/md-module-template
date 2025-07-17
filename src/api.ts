@@ -1,4 +1,4 @@
-import { Product } from './models/Product.model'
+import { ApiCallsStatisticsResponse, MakeStatisticsResponse, StatisticsFilters } from './models/Statistics.model'
 
 export const callApi = async <T, R = undefined>(
   path: string,
@@ -20,26 +20,54 @@ export const callApi = async <T, R = undefined>(
   return (await response).json() as Promise<T>
 }
 
-export const fetchProducts = async (tenant: string, token: string) => {
-  const products = await callApi<Product[]>(
-    `/product/${tenant}/products`,
+export const fetchAllTenants = async (tenant: string, token: string) => {
+  const response = await callApi<{ tenants: string[] }>(
+    `/statistics/emporix/allTenants`,
     'GET',
     tenant,
     token
   )
-  return products
+  return response
 }
 
-export const fetchProduct = async (
+export const fetchStatistics = async (
   tenant: string,
   token: string,
-  id: string
+  filters: StatisticsFilters
 ) => {
-  const product = await callApi<Product>(
-    `/product/${tenant}/products/${id}`,
+  const { timeUnit, startTime, endTime } = filters
+  const params = new URLSearchParams({
+    timeunit: timeUnit,
+    startTime,
+    endTime,
+  })
+  
+  const statistics = await callApi<ApiCallsStatisticsResponse>(
+    `/statistics/tenants/${tenant}/usage/apicalls?${params.toString()}`,
     'GET',
     tenant,
     token
   )
-  return product
+  return statistics
+}
+
+export const fetchMakeStatistics = async (
+  tenant: string,
+  token: string,
+  filters: StatisticsFilters
+) => {
+  const { timeUnit, startTime, endTime } = filters
+  const params = new URLSearchParams({
+    timeunit: timeUnit,
+    startTime,
+    endTime,
+  })
+  
+  const statistics = await callApi<MakeStatisticsResponse>(
+    `/statistics/${tenant}/usages/make?${params.toString()}`,
+    'GET',
+    tenant,
+    token
+  )
+  return statistics
 }

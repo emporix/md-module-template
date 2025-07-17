@@ -21,6 +21,27 @@ export default defineConfig({
       ],
     }),
   ],
+  server: {
+    cors: {
+      origin: [
+        'https://admin.emporix.io',
+        'https://dev-admin.emporix.io',
+        'https://stage-admin.emporix.io',
+        
+      ],
+      credentials: true,
+    },
+  },
+  preview: {
+    cors: {
+      origin: [
+        'https://admin.emporix.io',
+        'https://dev-admin.emporix.io',
+        'https://stage-admin.emporix.io',
+      ],
+      credentials: true,
+    },
+  },
   build: {
     modulePreload: false,
     target: 'esnext',

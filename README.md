@@ -21,16 +21,6 @@ npm install
 
 To test it locally with the Emporix Management Dashboard, build the project:
 
-#### Development enviroment
-```bash
-npm run build:dev
-```
-
-#### Staging enviroment
-```bash
-npm run build:stage
-```
-#### Production enviroment
 ```bash
 npm run build
 ```
@@ -47,9 +37,9 @@ You also need to add the module to the Management Dashboard:
 - provide the name of the module
 - enable module 
 - provide the URL to the `remoteEntry.js` file (`http://localhost:4173/assets/remoteEntry.js`)
-- add package name for the module (e.g. `orders-module`)
+- add package name for the module any name of your choosing. It should be a unique name for this tenant (e.g. `orders-module`)
 
-You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/user-guides/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides](https://developer.emporix.io/user-guides/management-dashboard/extensions/extensions).
+You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides]https://developer.emporix.io/ce/management-dashboard/administration/extensions).
 
 ### Deploying
 
@@ -81,16 +71,11 @@ Example of CORS configuration for Firebase hosting:
 ### Testing standalone module
 This project can be run locally outside of Management Dashboard using the following command:
 
-#### Development enviroment
 ```bash
-npm run dev
-```
-#### Staging enviroment
-```bash
-npm run dev:stage
+npm run preview
 ```
 
-You will be requested to provide app context on the start:
+You will be requested to provide app context on the start if you access the localhost-url directly:
 - tenant name
 - auth token (JWT token)
 - language  ('en' or 'de')

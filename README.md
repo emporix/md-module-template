@@ -55,9 +55,9 @@ You also need to add the module to the Management Dashboard:
 - provide the name of the module
 - enable module 
 - provide the URL to the `remoteEntry.js` file (`http://localhost:4173/assets/remoteEntry.js`)
-- add package name for the module any name of your choosing. It should be a unique name for this tenant (e.g. `ordersmodule`)
+- add package name for the module - any name of your choosing. It should be a unique name for this tenant (e.g. `ordersmodule`)
 
-You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides]https://developer.emporix.io/ce/management-dashboard/administration/extensions).
+You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions).
 
 ### Deploying
 

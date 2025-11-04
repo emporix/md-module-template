@@ -19,7 +19,25 @@ npm install
 
 ### Testing module
 
-To test it locally with the Emporix Management Dashboard, build the project:
+To test it locally with the Emporix Management Dashboard, you first have to enable CORS in the Management Dashboard. To do this add the following to the `vite.config.ts` file:
+
+```typescript
+  server: {
+    cors: {
+      origin: '*',
+      credentials: true,
+    },
+  },
+  preview: {
+    cors: {
+      origin: '*',
+      credentials: true,
+    },
+  },
+```
+
+
+Then build the project:
 
 ```bash
 npm run build
@@ -37,7 +55,7 @@ You also need to add the module to the Management Dashboard:
 - provide the name of the module
 - enable module 
 - provide the URL to the `remoteEntry.js` file (`http://localhost:4173/assets/remoteEntry.js`)
-- add package name for the module any name of your choosing. It should be a unique name for this tenant (e.g. `orders-module`)
+- add package name for the module any name of your choosing. It should be a unique name for this tenant (e.g. `ordersmodule`)
 
 You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides]https://developer.emporix.io/ce/management-dashboard/administration/extensions).
 
@@ -72,7 +90,7 @@ Example of CORS configuration for Firebase hosting:
 This project can be run locally outside of Management Dashboard using the following command:
 
 ```bash
-npm run preview
+npm run dev
 ```
 
 You will be requested to provide app context on the start if you access the localhost-url directly:

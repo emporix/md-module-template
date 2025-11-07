@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a module template designed for the Emporix platform. It is a React application that is built with Vite. It is based on the module federation concept described in [vite-plugin-deferation](https://github.com/originjs/vite-plugin-federation) repository.
+This is a module template designed for the Emporix platform. It is a React application that is built with Vite. It is based on the module federation concept described in [vite-plugin-federation](https://github.com/originjs/vite-plugin-federation) repository.
 
 This implementation is a simple example of a module built for most common use cases.
 

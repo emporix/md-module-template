@@ -1,13 +1,13 @@
+import { useEffect } from 'react'
 import { HashRouter, Routes, Route } from 'react-router'
-import List from './List'
+import { useTranslation } from 'react-i18next'
+import List from './pages/List'
+import Detail from './pages/Detail'
 import { AppState } from './models/AppState.model'
 import { DashboardProvider } from './context/Dashboard.context'
-import { useTranslation } from 'react-i18next'
-import { useEffect } from 'react'
 import './translations/i18n'
 import '/node_modules/primeflex/primeflex.css'
 import 'primeicons/primeicons.css'
-import Detail from './Detail'
 
 interface RemoteComponentProps {
   appState?: AppState

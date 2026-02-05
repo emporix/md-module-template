@@ -1,24 +1,24 @@
 import { useState } from 'react'
-import './App.css'
-import RemoteComponent from './RemoteComponent'
 import { Button, Card, InputText } from 'primereact'
-import 'primereact/resources/themes/lara-light-indigo/theme.css' //theme
-import 'primereact/resources/primereact.min.css' //core css
+import RemoteComponent from './RemoteComponent'
+import {
+  getStoredSettings,
+  saveStoredSettings,
+} from './helpers/settings.helpers'
+import './App.css'
+import 'primereact/resources/themes/lara-light-indigo/theme.css'
+import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
 
-function App() {
-  const [tenant, setTenant] = useState(localStorage.getItem('tenant') || '')
-  const [language, setLanguage] = useState(
-    localStorage.getItem('language') || 'en'
-  )
-  const [token, setToken] = useState(localStorage.getItem('token') || '')
-
+const App = () => {
+  const initial = getStoredSettings()
+  const [tenant, setTenant] = useState(initial.tenant)
+  const [language, setLanguage] = useState(initial.language)
+  const [token, setToken] = useState(initial.token)
   const [isDialogOpen, setIsDialogOpen] = useState(true)
 
   const handleSave = () => {
-    localStorage.setItem('tenant', tenant)
-    localStorage.setItem('language', language)
-    localStorage.setItem('token', token)
+    saveStoredSettings({ tenant, language, token })
     setIsDialogOpen(false)
   }
 
@@ -28,27 +28,27 @@ function App() {
         <Card>
           <span className="p-float-label mb-5">
             <InputText
-              id="in"
+              id="tenant"
               value={tenant}
               onChange={(e) => setTenant(e.target.value)}
             />
-            <label htmlFor="in">Tenant</label>
+            <label htmlFor="tenant">Tenant</label>
           </span>
           <span className="p-float-label mb-5">
             <InputText
-              id="in"
+              id="token"
               value={token}
               onChange={(e) => setToken(e.target.value)}
             />
-            <label htmlFor="in">Token</label>
+            <label htmlFor="token">Token</label>
           </span>
           <span className="p-float-label mb-5">
             <InputText
-              id="in"
+              id="language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             />
-            <label htmlFor="in">Language</label>
+            <label htmlFor="language">Language</label>
           </span>
           <Button label="Save" onClick={handleSave} />
         </Card>

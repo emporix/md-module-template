@@ -1,0 +1,363 @@
+# Cursor Rules Template (Generic)
+
+Use this file as a base for project-specific `.cursorrules`. Copy to your project and adapt sections that don't apply (e.g. remove React-specific parts for non-React projects, adjust paths, add domain rules).
+
+---
+
+## File Organization & Naming Conventions
+
+### Components
+- Use PascalCase for component files: `ButtonPrimary.tsx`, `Card.tsx`
+- Place components in `src/components/` with subdirectories for feature areas
+- Use `.module.scss` (or your chosen styling approach) for component-specific styles
+- Follow the pattern: `ComponentName.tsx` + `ComponentName.module.scss`
+
+### Models & Types
+- Use PascalCase for model/type files: `User.model.ts`, `ApiTypes.ts`
+- Place in `src/models/` or `src/types/` directory
+- Export types with PascalCase
+- Use descriptive type names that match the domain
+
+### Pages / Views
+- Use PascalCase for page components
+- Place in `src/pages/` or `src/views/` with feature subdirectories
+- Use page-specific styles where applicable
+
+### Helpers & Utilities
+- Use camelCase for helper files: `dateHelpers.ts`, `formatHelpers.ts`
+- Place in `src/helpers/` or `src/utils/` directory
+- Export functions with descriptive names
+- Group related helper functions in dedicated files
+
+---
+
+## Business Logic Separation
+
+### Core Principles
+- Keep business logic out of UI components. Put transformations, calculations, and domain logic in helpers/utilities.
+- Components should handle UI state, call helpers, and pass data—not implement complex logic inline.
+
+**✅ Prefer:**
+```typescript
+import { computeTotal, updateItem } from '../helpers/cart.helpers'
+
+// In component
+setCart(updateItem(cart, itemId, quantity))
+const total = computeTotal(cart)
+```
+
+**❌ Avoid:**
+```typescript
+// Inline logic in component
+setCart({
+  ...cart,
+  items: cart.items.map((i) =>
+    i.id === itemId ? { ...i, quantity } : i
+  ),
+})
+const total = cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+```
+
+### Component Responsibilities
+- Handle UI state and user interaction
+- Call helper/utility functions
+- Pass data down and callbacks up
+- Avoid inline business logic; extract to helpers
+
+### Immutability
+- Helpers should return new data instead of mutating inputs.
+- Prefer pure functions: same inputs → same outputs, no side effects.
+
+```typescript
+const updated = updateItem(list, id, value)
+// Original list is unchanged
+```
+
+---
+
+## Code Style & Patterns
+
+### Function Style & Helper Workflow
+- **Prefer arrow functions**: Use arrow functions for callbacks, handlers, helpers, and utilities. Use `const fn = () => {}` or `const fn = (x) => x` instead of `function fn() {}` unless a named declaration is required (e.g. hoisting).
+- **Extract to helpers whenever possible**: When you have logic (transformations, calculations, condition checks, state updates), extract it into a helper and call it from the component. Prefer small, pure helper functions over inline logic.
+- **Immediate unit tests for helpers**: As soon as you add or change a helper, write or update its unit tests in the same change. Do not commit new or modified helpers without tests (happy path, edge cases, immutability where applicable).
+
+### React Components (if applicable)
+- **Destructure props** at the top of the component; do not use `props.propName` throughout the body.
+```typescript
+const ComponentName = (props: ComponentProps) => {
+  const { prop1, prop2 = defaultValue } = props
+
+  return (
+    <div className={styles.container}>
+      {/* content */}
+    </div>
+  )
+}
+
+export default ComponentName
+```
+
+### Nullish Coalescing vs Logical OR
+- **Use `??` for null/undefined**: Default only when value is `null` or `undefined`.
+- **Use `||` for falsy**: When you want to treat empty string, 0, false as “use default”.
+
+```typescript
+const value = someValue ?? defaultValue
+const name = user?.name ?? 'Anonymous'
+const items = data?.items ?? []
+
+const displayName = user.name || 'Anonymous'  // empty string → default
+```
+
+### Props & Types
+- **Destructure props**: Always destructure props at the top of the component (e.g. `const { prop1, prop2 } = props`). Avoid using `props.xxx` in the component body.
+- Use explicit TypeScript types for props and state.
+- Use helpers like `PropsWithChildren`, `PropsWithClassName` when they fit your codebase.
+
+### Styling
+- Use CSS Modules (or your project standard) with a consistent naming scheme.
+- Use template literals for className composition: `${styles.base} ${className ?? ''}`.
+- Prefer BEM-like or consistent naming in stylesheets.
+
+### State Management
+- Use local state (e.g. React hooks) for component state.
+- Use context or global state for shared data; prefer minimal scope.
+- Prefer `useState` over `useReducer` for simple state.
+
+### Imports Order
+1. React (if applicable)
+2. Third-party libraries
+3. Internal components
+4. Helpers/utilities
+5. Types
+6. Styles
+
+### Exports
+- Default exports for components (or follow project convention).
+- Named exports for utilities, types, and constants.
+
+### Comments
+- **Do not add redundant comments**: Avoid comments that restate what the code clearly does (e.g. `// set the name` above `setName(value)`). Prefer self-explanatory names and structure.
+- **Comment only when logic is non-obvious**: Add brief or elaborate comments when the intent, algorithm, or business rule would not be clear to another programmer at first read (e.g. non-obvious invariants, workarounds, or domain rules). Prefer clarifying the code (naming, small functions) over long comments where possible.
+
+---
+
+## API Calls
+
+### Structure & Location
+- Place API logic in dedicated modules: `src/api/` or `src/services/` (e.g. `src/api/products.api.ts`, `src/services/auth.service.ts`).
+- Do not put raw fetch/request logic inside UI components; call API functions from components and handle loading/error state in the UI.
+- Use a single HTTP client or shared fetch wrapper for consistency (e.g. one base URL, shared headers, interceptors).
+
+### Configuration
+- Use environment variables for base URLs and API keys (e.g. `import.meta.env.VITE_API_BASE_URL`). Never hardcode secrets or environment-specific URLs.
+- Document required env vars (e.g. in `.env.example` or README).
+
+### Types
+- Define request and response types (interfaces or types) for each endpoint; place in `src/models/`, `src/types/`, or next to the API module.
+- Type the return value of API functions (e.g. `Promise<ApiResponse<T>>`). Avoid untyped responses.
+
+### Error Handling
+- Use try/catch for all API calls; surface errors to the caller or map to a shared error shape.
+- Handle HTTP error status (4xx, 5xx) and network failures; return or throw typed errors so UI can show appropriate messages.
+- Do not swallow errors; log with console.error (or your logger) and rethrow or return a Result type when appropriate.
+
+### Patterns
+- Prefer async/await over raw promise chains in API code.
+- Keep API functions pure in the sense of “same args → same request”; side effects (e.g. token refresh) belong in a shared client or interceptor.
+- When using React Query, SWR, or similar, put the data-fetching hook in a custom hook or service layer and keep components thin.
+
+```typescript
+// Prefer: API in dedicated module, typed response
+// src/api/products.api.ts
+export const fetchProduct = async (id: string): Promise<Product> => {
+  const res = await fetch(`${getBaseUrl()}/products/${id}`)
+  if (!res.ok) throw new ApiError(res.status, await res.text())
+  return res.json()
+}
+```
+
+```typescript
+// In component: call API, handle loading/error
+const [product, setProduct] = useState<Product | null>(null)
+const [error, setError] = useState<Error | null>(null)
+useEffect(() => {
+  fetchProduct(id).then(setProduct).catch(setError)
+}, [id])
+```
+
+---
+
+## Error Handling
+- Use try/catch for async operations.
+- Handle API/network errors explicitly.
+- Use error boundaries (e.g. React) where appropriate.
+- Log errors appropriately (e.g. console.error); avoid console.log in production paths.
+
+---
+
+## Performance
+- Memoize expensive components when needed.
+- Use correct dependency arrays in hooks (useEffect, useMemo, useCallback).
+- Lazy load heavy or route-level components when appropriate.
+
+---
+
+## Testing
+- **Write unit tests for helpers immediately** after creating or modifying them (same commit/change).
+- Place test files next to source: `Component.test.tsx`, `module.helpers.test.ts`.
+- Use your project’s test runner (e.g. Vitest, Jest).
+
+### Helper Tests
+- Cover happy path, edge cases, and immutability (no mutating inputs).
+- Use describe/it structure; one describe per helper or group.
+- Test null/undefined and boundary conditions.
+
+```typescript
+describe('helperName', () => {
+  it('returns expected result', () => {
+    const result = helperName(input, ...args)
+    expect(result).toEqual(expected)
+  })
+
+  it('does not mutate input', () => {
+    const original = { ...input }
+    helperName(input, ...args)
+    expect(input).toEqual(original)
+  })
+})
+```
+
+---
+
+## Code Quality
+- Use TypeScript strict mode; avoid `any`.
+- Use descriptive variable and function names.
+- Keep functions small and focused.
+- Type all props, state, and function signatures.
+- Follow ESLint and Prettier (or project equivalents).
+- Run lint and type-check before committing; ensure build and tests pass.
+
+---
+
+## When finishing work (agents)
+- **Before considering a task done**, run the following to ensure everything works:
+  1. **Lint**: `npm run lint` (fix auto-fixable issues if it fails).
+  2. **Tests**: `npm run test:run` (or `npm run test`).
+  3. **Build**: `npm run build` (or `npm run typecheck` and then build).
+- Do not leave the task without having run these commands and addressed any failures.
+
+---
+
+## Avoid
+- Using `any` type
+- Function declarations for callbacks/helpers when arrow functions are possible
+- console.log in production code (use console.error/info/warn where appropriate)
+- Inline styles when you have a styling system (e.g. CSS Modules)
+- Large, monolithic components (split or extract)
+- Deep prop drilling (use context or composition)
+- Mixing styling approaches inconsistently
+- Event bubbling issues (e.g. nested click handlers without stopPropagation where intended)
+- Missing accessibility attributes on interactive elements
+- Putting business logic in components instead of helpers
+- Mutating inputs inside helper functions
+- Non-null assertion (`!`) without clear justification; prefer null checks or defaults
+- useMemo/useCallback for static or trivial values
+- Generic or vague user messages (prefer specific feedback)
+- Keeping unused components or dead code
+- Inline complex logic that could be a named helper
+- Inconsistent naming or file organization
+- Missing tests for new or changed helpers
+- Overly complex callback chains (prefer simpler patterns or refs where appropriate)
+- Custom ref patterns when forwardRef (or standard refs) is enough
+- Unnecessary useImperativeHandle when direct ref forwarding suffices
+- Untyped ref access; use proper types and guards
+- Component APIs with too many props (split or group)
+- Raw fetch/API logic inside UI components (use api/ or services layer)
+- Hardcoding API base URLs or secrets (use env vars)
+- Untyped API responses or request bodies
+- Redundant or obvious comments (e.g. restating what the code does); comment only when logic might not be clear
+
+---
+
+## Prefer
+- Arrow functions for callbacks, handlers, helpers, utilities
+- Extracting logic into helper methods; avoid inline business logic in components
+- Writing unit tests immediately after creating or modifying helper methods
+- TypeScript strict mode and explicit types
+- CSS Modules (or project styling standard) and consistent naming
+- Functional components and hooks (in React projects)
+- Destructuring props at the top of components (avoid `props.xxx` in the body)
+- Descriptive naming and small, focused functions
+- Explicit error handling
+- Component composition over inheritance
+- State management for interactive UI (e.g. menus, toggles)
+- Accessibility-first design (ARIA, keyboard, focus)
+- Shared patterns for repeated UI (e.g. menus, buttons)
+- Helper reuse over duplicated logic
+- Pure, immutable helpers
+- Nullish coalescing (`??`) for null/undefined defaults
+- Static data outside components when it does not depend on props/state
+- Specific user-facing messages
+- Regular removal of unused code
+- Extracting complex UI into smaller components
+- Consistent naming and feature-based organization
+- Documentation (e.g. Storybook) for shared components
+- Incremental refactors
+- forwardRef (or standard refs) over custom callback-based “ref” patterns where it fits
+- Type-safe refs and guards when accessing refs
+- Fewer, clearer props per component
+- API logic in dedicated api/ or services/ modules with typed requests and responses
+- Environment variables for base URLs and API keys; shared HTTP client or fetch wrapper
+- Comments only when logic might not be clear at first read; prefer clear naming and structure over comments
+
+---
+
+## Ref and Component Patterns (generic)
+- Prefer forwarding refs (e.g. forwardRef) over custom callback props when the goal is to expose a child API.
+- Use type guards when reading refs: e.g. `ref && typeof ref === 'object' && ref.current`.
+- Prefer direct ref control over extra state used only to coordinate parent/child.
+
+---
+
+## Event Handling (generic)
+- Use stopPropagation when you need to prevent parent handlers from firing (e.g. nested menus).
+- Track open/active state for menus and popovers so parent clicks can be ignored when child is open.
+- Reset state (e.g. menu closed) in the appropriate lifecycle (e.g. onHide) to avoid stale UI.
+
+---
+
+## Accessibility
+- Add ARIA attributes where needed (e.g. aria-haspopup, aria-label for menus and buttons).
+- Ensure keyboard navigation and focus behavior work for custom interactive components.
+- Prefer semantic HTML (button, nav, etc.) over generic divs for interactive elements.
+
+---
+
+## Git Conventions (optional – adapt to your workflow)
+
+### Branch Naming
+- Format: `{prefix}/{ticket-or-slug}-{short-description}` (e.g. `feature/TICKET-123-add-login`, `fix/TICKET-456-fix-validation`).
+- Prefixes: `feature/`, `fix/`, `release/` (or your team’s convention).
+- Use kebab-case for the description part.
+
+### Commit Messages
+- One clear sentence; present tense (“Add feature” not “Added feature”).
+- Include ticket/id if your project uses it: e.g. `TICKET-123 Add login form validation`.
+- Be specific; avoid “Update files” or “Fix bugs”.
+
+### Before Committing
+- Run lint and fix auto-fixable issues.
+- Run type-check (e.g. `tsc --noEmit`).
+- Run tests and ensure build passes.
+
+---
+
+## Migration / Refactoring
+When refactoring:
+1. Identify logic that belongs in helpers and move it.
+2. Replace inline logic with helper calls.
+3. Add or update tests for helpers.
+4. Verify behavior and build.
+

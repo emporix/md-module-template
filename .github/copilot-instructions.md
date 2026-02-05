@@ -1,0 +1,1 @@
+Please refer to the rules defined in /.cursorrules for project standards

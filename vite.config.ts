@@ -29,18 +29,14 @@ export default defineConfig({
   },
   server: {
     cors: {
-      origin: [
-        'https://admin.emporix.io'
-      ],
+      origin: ['https://admin.emporix.io'],
       credentials: true,
     },
   },
   preview: {
     cors: {
-      origin: [
-        'https://admin.emporix.io'
-      ],
+      origin: ['https://admin.emporix.io'],
       credentials: true,
     },
-  }
+  },
 })

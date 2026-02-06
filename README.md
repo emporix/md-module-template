@@ -8,7 +8,22 @@ This implementation is a simple example of a module built for most common use ca
 
 The main goal was to provide a minimal setup for a module that can be used as a starting point for more complex modules.
 
+## AI and code-assistant rules
+
+Project conventions and rules for AI-assisted coding (style, structure, API usage, testing, etc.) are defined in the **`.cursorrules`** file. If you use **Cursor**, it will use this file automatically.
+
+If you use a different AI or code-assistant tool, copy the contents of `.cursorrules` into that tool’s instructions file so the same rules apply, for example:
+
+- **GitHub Copilot**: paste into `.github/copilot-instructions.md` (or your repo’s Copilot instructions file).
+- **Other tools**: use the file or setting your tool provides for “project rules” or “custom instructions” and paste the contents of `.cursorrules` there.
+
 ## Development
+
+### Environment variables
+
+Copy `.env.example` to `.env` and set the required variables:
+
+- **VITE_API_URL** – Base URL for the Emporix API (e.g. `https://api-develop.emporix.io`). Used for product list and detail requests.
 
 ### Prerequisites
 To get started, install the dependencies:
@@ -16,6 +31,8 @@ To get started, install the dependencies:
 ```bash
 npm install
 ```
+
+Before committing, run `npm run lint`, `npm run typecheck`, and `npm run test:run` to ensure the project passes checks.
 
 ### Testing module
 
@@ -58,6 +75,19 @@ You also need to add the module to the Management Dashboard:
 - add package name for the module - any name of your choosing. It should be a unique name for this tenant (e.g. `ordersmodule`)
 
 You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions).
+
+### Seting up MCP Server with Emporix documentation
+
+You can set up MCP Server with Emporix documentation by adding the following to your .mcp.json file:
+
+```json
+ "emporixdocs": {
+    "url": "https://developer.emporix.io/api-references/~gitbook/mcp",
+    "headers": {},
+    "type": "http",
+  },
+```
+
 
 ### Deploying
 

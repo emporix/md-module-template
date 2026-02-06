@@ -76,6 +76,19 @@ You also need to add the module to the Management Dashboard:
 
 You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions).
 
+### Seting up MCP Server with Emporix documentation
+
+You can set up MCP Server with Emporix documentation by adding the following to your .mcp.json file:
+
+```json
+ "emporixdocs": {
+    "url": "https://developer.emporix.io/api-references/~gitbook/mcp",
+    "headers": {},
+    "type": "http",
+  },
+```
+
+
 ### Deploying
 
 In order to use the module in the Emporix Management Dashboard, deploy it to a hosting service and then provide the URL to the `remoteEntry.js` in the Emporix Management Dashboard.

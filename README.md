@@ -77,8 +77,11 @@ You also need to add the module to the Management Dashboard:
 You can find the Management Dashboard extensions documentation at [Administration - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions) and [Management Dashboard - Extension Guides](https://developer.emporix.io/ce/management-dashboard/administration/extensions).
 
 ### Seting up MCP Server with Emporix documentation
+Click on the link to the Emporix documentation:
 
-You can set up MCP Server with Emporix documentation by adding the following to your .mcp.json file:
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=emporixdocs&config=eyJ1cmwiOiJodHRwczovL2RldmVsb3Blci5lbXBvcml4LmlvL2FwaS1yZWZlcmVuY2VzL35naXRib29rL21jcCIsImhlYWRlcnMiOnt9LCJ0eXBlIjoiaHR0cCJ9)
+
+You can also set up MCP Server manually with Emporix documentation by adding the following to your .mcp.json file:
 
 ```json
  "emporixdocs": {

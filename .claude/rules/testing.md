@@ -1,0 +1,59 @@
+---
+paths:
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+---
+
+# Testing
+
+## Framework
+
+**Vitest** with **@testing-library/react** for components. Test files are colocated next to source:
+
+```
+helper.helpers.ts
+helper.helpers.test.ts
+```
+
+## Helper Tests
+
+Required for every pure helper function. **Write or update tests in the same change** — do not commit new or modified helpers without tests.
+
+```typescript
+describe('helperFunction', () => {
+  it('returns expected result', () => {
+    expect(helperFunction(input)).toEqual(expected)
+  })
+
+  it('does not mutate input', () => {
+    const original = structuredClone(input)
+    helperFunction(input)
+    expect(input).toEqual(original)
+  })
+})
+```
+
+Cover: happy path, null/undefined properties, empty strings, boundary indices.
+
+## Component Tests
+
+- Mock context providers and external services
+- Test user interactions (clicks, form input, keyboard)
+- Test that menus/popovers do not trigger parent click handlers
+- Use `data-testid` only when role/text queries are impractical
+- Prefer accessible queries: `getByRole`, `getByLabelText`, `getByText`
+
+## Run
+
+```bash
+npm run test                    # all
+npx vitest run path/to/file     # single file
+```
+
+Check `package.json` for project-specific test scripts (e.g. `test:watch`, `test:coverage`).
+
+## When to Add Tests
+
+- **Always** for new or changed helpers — same commit/PR as the helper change
+- For components: when behavior is non-trivial (interactions, conditional rendering, error states)
+- Skip tests that only assert rendering without meaningful behavior

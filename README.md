@@ -10,12 +10,23 @@ The main goal was to provide a minimal setup for a module that can be used as a 
 
 ## AI and code-assistant rules
 
-Project conventions and rules for AI-assisted coding (style, structure, API usage, testing, etc.) are defined in the **`.cursorrules`** file. If you use **Cursor**, it will use this file automatically.
+Coding standards come from the shared [frontend-ai-rules](https://github.com/emporix/frontend-ai-rules) package. Rules sync automatically on `npm install` via the `postinstall` script.
 
-If you use a different AI or code-assistant tool, copy the contents of `.cursorrules` into that tool’s instructions file so the same rules apply, for example:
+| Agent | Index file | Rule files |
+|-------|------------|------------|
+| **Cursor** | `.cursorrules` | `.cursor/rules/*.mdc` |
+| **GitHub Copilot** | `.github/copilot-instructions.md` | `.github/instructions/*.instructions.md` |
+| **Claude Code** | `.claude/CLAUDE.md` | `.claude/rules/*.md` |
 
-- **GitHub Copilot**: paste into `.github/copilot-instructions.md` (or your repo’s Copilot instructions file).
-- **Other tools**: use the file or setting your tool provides for “project rules” or “custom instructions” and paste the contents of `.cursorrules` there.
+**Project-specific rules** (not overwritten on sync) live in `extension-module-template.*` — overrides and template-only patterns that extend global rules.
+
+To re-sync global rules manually:
+
+```bash
+npm run sync:ai-rules
+```
+
+> **Note:** Synced index files and generic rule files are overwritten on install. Do not edit `00-core`, `api-data`, etc. — add project-specific rules in uniquely named files instead.
 
 ## Development
 

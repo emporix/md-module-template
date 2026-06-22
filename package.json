@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev:stage": "vite --mode stage",
+    "postinstall": "node node_modules/frontend-ai-rules/scripts/sync-rules.js && node scripts/customize-ai-rules-index.mjs",
+    "sync:ai-rules": "node node_modules/frontend-ai-rules/scripts/sync-rules.js && node scripts/customize-ai-rules-index.mjs",
     "build:watch": "tsc -b && vite build --mode dev --watch",
     "build:dev": "tsc -b && vite build --mode dev",
     "build:stage": "tsc -b && vite build --mode stage",
@@ -29,6 +31,7 @@
     "react-router": "^7.13.1"
   },
   "devDependencies": {
+    "frontend-ai-rules": "git+https://github.com/emporix/frontend-ai-rules.git#master",
     "@eslint/js": "^9.39.4",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",

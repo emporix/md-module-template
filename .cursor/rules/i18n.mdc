@@ -1,0 +1,33 @@
+---
+description: Internationalization with react-i18next
+globs: src/translations/**
+alwaysApply: false
+---
+
+# Internationalization (i18n)
+
+## Setup
+
+Emporix frontend apps use **react-i18next**. Translation files live under `src/translations/{locale}/`.
+
+## Usage in Components
+
+```typescript
+import { useTranslation } from 'react-i18next'
+
+const { t } = useTranslation()
+
+return <span>{t('feature.section.label')}</span>
+```
+
+## Key Conventions
+
+- Never hardcode user-facing strings in JSX
+- Keys follow component/feature hierarchy: `featureName.sectionName.labelKey`
+- Add keys to all supported locales when adding new copy
+- Use interpolation for dynamic values: `t('key.message', { name })`
+
+## Pluralization and Formatting
+
+- Use i18next plural forms for count-dependent strings
+- Format dates/numbers with locale-aware helpers, not string concatenation

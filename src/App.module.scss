@@ -25,17 +25,17 @@
 
   cursor: pointer;
   z-index: 1000;
-}
 
-.appFab:focus {
-  outline: none;
-}
+  &:focus {
+    outline: none;
+  }
 
-.appFab:focus-visible {
-  outline: 2px solid #128afb;
-  outline-offset: 2px;
-}
+  &:focus-visible {
+    outline: 2px solid #128afb;
+    outline-offset: 2px;
+  }
 
-.appFab:hover {
-  background: rgba(18, 138, 251, 0.05);
+  &:hover {
+    background: rgba(18, 138, 251, 0.05);
+  }
 }

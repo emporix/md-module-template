@@ -6,7 +6,8 @@ import {
   saveStoredSettings,
   shouldOpenDevSettingsDialog,
 } from './helpers/settings.helpers'
-import './App.css'
+import styles from './App.module.scss'
+import '/node_modules/primeflex/primeflex.css'
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
 import 'primereact/resources/primereact.min.css'
 import 'primeicons/primeicons.css'
@@ -31,40 +32,49 @@ const App = () => {
     return (
       <div className="p-16">
         <Card>
-          <span className="p-float-label mb-5">
+          <div className="field mb-5">
+            <label htmlFor="tenant" className="block mb-2">
+              Tenant
+            </label>
             <InputText
               id="tenant"
+              className="w-full"
               value={tenant}
               onChange={(e) => setTenant(e.target.value)}
             />
-            <label htmlFor="tenant">Tenant</label>
-          </span>
-          <span className="p-float-label mb-5">
+          </div>
+          <div className="field mb-5">
+            <label htmlFor="token" className="block mb-2">
+              Token
+            </label>
             <InputText
               id="token"
+              className="w-full"
               value={token}
               onChange={(e) => setToken(e.target.value)}
             />
-            <label htmlFor="token">Token</label>
-          </span>
-          <span className="p-float-label mb-5">
+          </div>
+          <div className="field mb-5">
+            <label htmlFor="language" className="block mb-2">
+              Language
+            </label>
             <InputText
               id="language"
+              className="w-full"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             />
-            <label htmlFor="language">Language</label>
-          </span>
+          </div>
           <Button label="Save" onClick={handleSave} />
         </Card>
       </div>
     )
   }
   return (
-    <div className="appShell">
+    <div className={styles.appShell}>
       {isDev && (
         <button
-          className="appFab"
+          className={styles.appFab}
           type="button"
           aria-label="Edit tenant/token values"
           title="Edit values"

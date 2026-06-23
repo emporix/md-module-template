@@ -17,3 +17,8 @@ export const saveStoredSettings = (settings: AppState): void => {
   localStorage.setItem(LANGUAGE_KEY, settings.language)
   localStorage.setItem(TOKEN_KEY, settings.token)
 }
+
+export const shouldOpenDevSettingsDialog = (): boolean => {
+  const { tenant, token } = getStoredSettings()
+  return tenant.trim() === '' || token.trim() === ''
+}

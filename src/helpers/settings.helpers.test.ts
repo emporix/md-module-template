@@ -1,5 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getStoredSettings, saveStoredSettings } from './settings.helpers'
+import {
+  getStoredSettings,
+  saveStoredSettings,
+  shouldOpenDevSettingsDialog,
+} from './settings.helpers'
 
 const createMockStorage = () => {
   const store: Record<string, string> = {}
@@ -44,6 +48,46 @@ describe('getStoredSettings', () => {
     expect(result.tenant).toBe('')
     expect(result.language).toBe('en')
     expect(result.token).toBe('')
+    vi.unstubAllGlobals()
+  })
+})
+
+describe('shouldOpenDevSettingsDialog', () => {
+  it('returns true when tenant is missing', () => {
+    const storage = createMockStorage()
+    storage.setItem('token', 'jwt-123')
+    vi.stubGlobal('localStorage', storage)
+
+    expect(shouldOpenDevSettingsDialog()).toBe(true)
+    vi.unstubAllGlobals()
+  })
+
+  it('returns true when token is missing', () => {
+    const storage = createMockStorage()
+    storage.setItem('tenant', 'my-tenant')
+    vi.stubGlobal('localStorage', storage)
+
+    expect(shouldOpenDevSettingsDialog()).toBe(true)
+    vi.unstubAllGlobals()
+  })
+
+  it('returns false when tenant and token are present', () => {
+    const storage = createMockStorage()
+    storage.setItem('tenant', 'my-tenant')
+    storage.setItem('token', 'jwt-123')
+    vi.stubGlobal('localStorage', storage)
+
+    expect(shouldOpenDevSettingsDialog()).toBe(false)
+    vi.unstubAllGlobals()
+  })
+
+  it('returns true when tenant or token is whitespace only', () => {
+    const storage = createMockStorage()
+    storage.setItem('tenant', '   ')
+    storage.setItem('token', 'jwt-123')
+    vi.stubGlobal('localStorage', storage)
+
+    expect(shouldOpenDevSettingsDialog()).toBe(true)
     vi.unstubAllGlobals()
   })
 })

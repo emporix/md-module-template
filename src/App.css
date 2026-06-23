@@ -1,0 +1,41 @@
+.appShell {
+  position: relative;
+  min-height: 100vh;
+}
+
+.appFab {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  border: 1px solid #3b64a0;
+  background: white;
+  color: #3b64a0;
+
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.appFab:focus {
+  outline: none;
+}
+
+.appFab:focus-visible {
+  outline: 2px solid #128afb;
+  outline-offset: 2px;
+}
+
+.appFab:hover {
+  background: rgba(18, 138, 251, 0.05);
+}

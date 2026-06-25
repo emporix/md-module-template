@@ -16,7 +16,7 @@ const directoryMap = [
   '| `src/pages/` | Route-level page components |',
   '| `src/models/` | Domain types (`AppState`, `Product`, `ApiError`) |',
   '| `src/helpers/` | Pure helpers (`settings.helpers.ts` for standalone dev) |',
-  '| `src/api/` | Emporix REST API layer (`callApi`, product endpoints) |',
+  '| `src/api/` | Emporix REST API layer (`@emporix/api-calls`, `bootstrap.ts`) |',
   '| `src/context/` | `DashboardProvider` — host `tenant`, `language`, `token` |',
   '| `src/translations/{locale}/` | i18n keys (react-i18next) |',
   '| `vite.config.ts` | Module Federation config, CORS, shared dependencies |',
@@ -35,12 +35,13 @@ const customize = (content) =>
       projectDescription
     )
     .replace(genericDirectoryMap, `## Directory Map\n\n${directoryMap}`)
-    .replace(
-      /\| _\(add project rules here\)_ \| \|/,
-      projectRuleRow
-    )
+    .replace(/\| _\(add project rules here\)_ \| \|/, projectRuleRow)
 
-const tasks = ['.cursorrules', '.github/copilot-instructions.md', '.claude/CLAUDE.md']
+const tasks = [
+  '.cursorrules',
+  '.github/copilot-instructions.md',
+  '.claude/CLAUDE.md',
+]
 
 for (const relativePath of tasks) {
   const filePath = resolve(rootDir, relativePath)

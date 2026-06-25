@@ -9,11 +9,11 @@ Emporix **Management Dashboard extension module** — Module Federation remote. 
 | API env var | `VITE_API_BASE_URL` (`api-data`) | `VITE_API_URL` — see `.env.example` |
 | API auth | Generic `fetch` example | `emporix-tenant` header + `Authorization: Bearer {token}`; pass `tenant`/`token` from `useDashboardContext()` into API functions |
 | API errors | Inline `ApiError` in api module | `ApiError` from `src/models/ApiError.model.ts`; handle empty response bodies before `JSON.parse` |
-| UI library | `@emporix/component-library` (`emporix-component-library`) | **PrimeReact + PrimeFlex only** — package not installed |
+| UI library | `@emporix/component-library` (`emporix-component-library`) | **@emporix/component-library** — import styles once at `RemoteComponent`; `ToastProvider` at federated entry |
 | i18n keys | Hierarchical (`feature.section.label`) | Match existing **flat** keys (e.g. `t('products')`) |
 | Quality gates | `npx tsc --noEmit`, `npm run test` (`00-core`) | `npm run typecheck`, `npm run test:run` |
 
-Shared wrapper: `callApi` in `src/api/products.api.ts`.
+Shared API client: `setApiCredentials` / `useApiCredentials` in `src/api/bootstrap.ts`.
 
 ## Host integration
 
@@ -37,7 +37,7 @@ Outside the dashboard (`npm run dev`):
 
 - `main.tsx` → `App.tsx` shows a settings dialog, then mounts `RemoteComponent`
 - `settings.helpers.ts` persists `tenant`, `language`, `token` in `localStorage`
-- PrimeReact **theme** CSS in `App.tsx` only; **PrimeFlex + PrimeIcons** in `RemoteComponent.tsx` only
+- `@emporix/component-library/styles` in `App.tsx` (standalone) and `RemoteComponent.tsx` (federated entry)
 
 ## Project config (`vite.config.ts`)
 

@@ -1,1 +1,1 @@
-export { callApi, fetchProducts, fetchProduct } from './products.api'
+export { ensureApiClient, syncApiCredentials } from './bootstrap'

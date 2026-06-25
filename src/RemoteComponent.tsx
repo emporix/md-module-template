@@ -3,7 +3,7 @@ import { HashRouter, Routes, Route } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import List from './pages/List'
 import Detail from './pages/Detail'
-import { ensureApiClient, syncApiCredentials } from './api'
+import { useApiCredentials } from './api/bootstrap'
 import { AppState } from './models/AppState.model'
 import { DashboardProvider } from './context/Dashboard.context'
 import './translations/i18n'
@@ -21,15 +21,12 @@ const RemoteComponent = ({
     token: 'default',
   },
 }: RemoteComponentProps) => {
+  useApiCredentials(appState.tenant, appState.token)
+
   const { i18n } = useTranslation()
   useEffect(() => {
     i18n.changeLanguage(appState.language)
   }, [appState.language, i18n])
-
-  useEffect(() => {
-    ensureApiClient()
-    syncApiCredentials(appState.tenant, appState.token)
-  }, [appState.tenant, appState.token])
 
   return (
     <DashboardProvider appState={appState}>

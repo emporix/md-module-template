@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Column, DataTable } from 'primereact'
+import { DataTable } from '@emporix/component-library'
 import { useTranslation } from 'react-i18next'
 import { fetchProducts } from '@emporix/api-calls'
 import { useDashboardContext } from '../context/Dashboard.context'
 import { getLocalizedText } from '../helpers/localized.helpers'
 import { Product } from '../models/Product.model'
+import styles from './List.module.scss'
 
 const PRODUCT_LIST_FIELDS = 'id,code,name,description,productType,media'
 
@@ -16,6 +17,32 @@ const List = () => {
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
+
+  const columns = useMemo(
+    () => [
+      {
+        columnKey: 'code',
+        field: 'code',
+        header: t('productCode'),
+      },
+      {
+        columnKey: 'name',
+        header: t('productName'),
+        body: (row: Product) => getLocalizedText(row.name, language),
+      },
+      {
+        columnKey: 'description',
+        header: t('productDescription'),
+        body: (row: Product) => getLocalizedText(row.description, language),
+      },
+      {
+        columnKey: 'productType',
+        field: 'productType',
+        header: t('productType'),
+      },
+    ],
+    [language, t]
+  )
 
   useEffect(() => {
     setError(null)
@@ -35,34 +62,29 @@ const List = () => {
 
   if (error) {
     return (
-      <div className="p-4">
-        <h1 className="my-2">{t('products')}</h1>
+      <div className={styles.page}>
+        <h1 className={styles.title}>{t('products')}</h1>
         <p>Error: {error.message}</p>
       </div>
     )
   }
 
   return (
-    <div className="p-4">
-      <h1 className="my-2">{t('products')}</h1>
+    <div className={styles.page}>
+      <h1 className={styles.title}>{t('products')}</h1>
       <DataTable
         value={products}
+        dataKey="id"
+        columns={columns}
         loading={isLoading}
-        onRowClick={(e) => {
-          navigate(e.data.id)
+        paginator={false}
+        showFilter={false}
+        onRowClick={(row) => {
+          if (row.id) {
+            navigate(row.id)
+          }
         }}
-      >
-        <Column field="code" header={t('productCode')}></Column>
-        <Column
-          header={t('productName')}
-          body={(row: Product) => getLocalizedText(row.name, language)}
-        ></Column>
-        <Column
-          header={t('productDescription')}
-          body={(row: Product) => getLocalizedText(row.description, language)}
-        ></Column>
-        <Column field="productType" header={t('productType')}></Column>
-      </DataTable>
+      />
     </div>
   )
 }

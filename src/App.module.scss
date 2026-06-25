@@ -1,3 +1,20 @@
+.settingsPage {
+  padding: 4rem;
+}
+
+.settingsCard {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--color-bg-primary, #fff);
+  border: 1px solid var(--color-border-light, #e9ecef);
+  border-radius: 0.5rem;
+}
+
+.settingsField {
+  margin-bottom: 1.25rem;
+}
+
 .appShell {
   position: relative;
   min-height: 100vh;

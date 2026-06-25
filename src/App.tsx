@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Button, Card, InputText } from 'primereact'
+import { InputText, PrimaryButton } from '@emporix/component-library'
+import '@emporix/component-library/styles'
 import RemoteComponent from './RemoteComponent'
 import {
   getStoredSettings,
@@ -7,10 +8,6 @@ import {
   shouldOpenDevSettingsDialog,
 } from './helpers/settings.helpers'
 import styles from './App.module.scss'
-import '/node_modules/primeflex/primeflex.css'
-import 'primereact/resources/themes/lara-light-indigo/theme.css'
-import 'primereact/resources/primereact.min.css'
-import 'primeicons/primeicons.css'
 
 const isDev = import.meta.env.DEV
 
@@ -30,43 +27,34 @@ const App = () => {
 
   if (isDev && isDialogOpen) {
     return (
-      <div className="p-16">
-        <Card>
-          <div className="field mb-5">
-            <label htmlFor="tenant" className="block mb-2">
-              Tenant
-            </label>
+      <div className={styles.settingsPage}>
+        <section className={styles.settingsCard}>
+          <div className={styles.settingsField}>
             <InputText
-              id="tenant"
-              className="w-full"
+              inputId="tenant"
+              label="Tenant"
               value={tenant}
               onChange={(e) => setTenant(e.target.value)}
             />
           </div>
-          <div className="field mb-5">
-            <label htmlFor="token" className="block mb-2">
-              Token
-            </label>
+          <div className={styles.settingsField}>
             <InputText
-              id="token"
-              className="w-full"
+              inputId="token"
+              label="Token"
               value={token}
               onChange={(e) => setToken(e.target.value)}
             />
           </div>
-          <div className="field mb-5">
-            <label htmlFor="language" className="block mb-2">
-              Language
-            </label>
+          <div className={styles.settingsField}>
             <InputText
-              id="language"
-              className="w-full"
+              inputId="language"
+              label="Language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             />
           </div>
-          <Button label="Save" onClick={handleSave} />
-        </Card>
+          <PrimaryButton onClick={handleSave}>Save</PrimaryButton>
+        </section>
       </div>
     )
   }

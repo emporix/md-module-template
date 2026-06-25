@@ -4,6 +4,7 @@ import { fetchProductCall } from '@emporix/api-calls'
 import { useDashboardContext } from '../context/Dashboard.context'
 import { getLocalizedText } from '../helpers/localized.helpers'
 import { Product } from '../models/Product.model'
+import styles from './Detail.module.scss'
 
 const Detail = () => {
   const { productId } = useParams()
@@ -33,7 +34,9 @@ const Detail = () => {
   }, [productId, token, tenant])
 
   if (isLoading) return <div>Loading...</div>
-  if (error) return <div className="p-4">Error: {error.message}</div>
+  if (error) {
+    return <div className={styles.page}>Error: {error.message}</div>
+  }
   if (!product) return null
 
   const imageUrl = product.media?.[0]?.url ?? ''
@@ -41,15 +44,15 @@ const Detail = () => {
   const productDescription = getLocalizedText(product.description, language)
 
   return (
-    <div className="p-4">
+    <div className={styles.page}>
       <NavLink to="/" aria-label="Back to product list">
         Back
       </NavLink>
-      <h1 className="my-8">{productName}</h1>
+      <h1 className={styles.title}>{productName}</h1>
       {imageUrl ? (
-        <img src={imageUrl} alt={productName} className="w-6" />
+        <img src={imageUrl} alt={productName} className={styles.image} />
       ) : null}
-      <p className="w-6 mt-8">{productDescription}</p>
+      <p className={styles.description}>{productDescription}</p>
     </div>
   )
 }

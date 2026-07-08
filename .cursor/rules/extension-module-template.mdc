@@ -12,7 +12,7 @@ Emporix **Management Dashboard extension module** — Module Federation remote. 
 | Topic | Global rule | This project |
 |-------|-------------|--------------|
 | API env var | `VITE_API_BASE_URL` (`api-data`) | `VITE_API_URL` — see `.env.example` |
-| API auth | Generic `fetch` example | `emporix-tenant` header + `Authorization: Bearer {token}`; pass `tenant`/`token` from `useDashboardContext()` into API functions |
+| API auth | Generic `fetch` example | `emporix-tenant` header + `Authorization: Bearer {token}`; pass `tenant`/`token` from `useExtensionContext()` into API functions |
 | API errors | Inline `ApiError` in api module | `ApiError` from `src/models/ApiError.model.ts`; handle empty response bodies before `JSON.parse` |
 | UI library | `@emporix/component-library` (`emporix-component-library`) | **@emporix/component-library** — import styles once at `RemoteComponent`; `ToastProvider` at federated entry |
 | i18n keys | Hierarchical (`feature.section.label`) | Match existing **flat** keys (e.g. `t('products')`) |
@@ -24,16 +24,16 @@ Shared API client: `setApiCredentials` / `useApiCredentials` in `src/api/bootstr
 
 - Host passes `tenant`, `language`, `token` via `appState` prop on `RemoteComponent`
 - Use **`HashRouter`** (not `BrowserRouter`) when embedded in the dashboard
-- `DashboardProvider` wraps routes; read host values with `useDashboardContext()`
+- `ExtensionProvider` wraps routes; read host values with `useExtensionContext()`
 - Sync language on host change: `i18n.changeLanguage(appState.language)` in `RemoteComponent`
 - Never hardcode tenant or token
 
 ```typescript
-<DashboardProvider appState={appState}>
+<ExtensionProvider appState={appState}>
   <HashRouter>
     <Routes>...</Routes>
   </HashRouter>
-</DashboardProvider>
+</ExtensionProvider>
 ```
 
 ## Standalone local development

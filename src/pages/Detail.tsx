@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { NavLink, useParams } from 'react-router'
 import { fetchProductCall } from '@emporix/api-calls'
-import { useDashboardContext } from '../context/Dashboard.context'
+import { useExtensionContext } from '../context/ExtensionContext'
 import { getLocalizedText } from '../helpers/localized.helpers'
 import { Product } from '../models/Product.model'
 import styles from './Detail.module.scss'
 
 const Detail = () => {
   const { productId } = useParams()
-  const { token, tenant, language } = useDashboardContext()
+  const { token, tenant, language } = useExtensionContext()
   const [product, setProduct] = useState<Product | null>(null)
   const [error, setError] = useState<Error | null>(null)
   const [isLoading, setIsLoading] = useState(true)

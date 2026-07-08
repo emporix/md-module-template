@@ -1,23 +1,23 @@
 import { createContext, useContext, type PropsWithChildren } from 'react'
 import { AppState } from '../models/AppState.model'
 
-type DashboardContextType = AppState
+type ExtensionContextType = AppState
 
-const Context = createContext<DashboardContextType>({
+const Context = createContext<ExtensionContextType>({
   tenant: '',
   language: '',
   token: '',
 })
 
-export const useDashboardContext = () => useContext(Context)
+export const useExtensionContext = () => useContext(Context)
 
-export type DashboardProviderProps = PropsWithChildren<{
+export type ExtensionProviderProps = PropsWithChildren<{
   appState: AppState
 }>
 
-export const DashboardProvider = ({
+export const ExtensionProvider = ({
   children,
   appState,
-}: DashboardProviderProps) => {
+}: ExtensionProviderProps) => {
   return <Context.Provider value={appState}>{children}</Context.Provider>
 }

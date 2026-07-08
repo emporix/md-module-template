@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { DataTable } from '@emporix/component-library'
 import { useTranslation } from 'react-i18next'
 import { fetchProducts } from '@emporix/api-calls'
-import { useDashboardContext } from '../context/Dashboard.context'
+import { useExtensionContext } from '../context/ExtensionContext'
 import { getLocalizedText } from '../helpers/localized.helpers'
 import { Product } from '../models/Product.model'
 import styles from './List.module.scss'
@@ -13,7 +13,7 @@ const PRODUCT_LIST_FIELDS = 'id,code,name,description,productType,media'
 const List = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { token, tenant, language } = useDashboardContext()
+  const { token, tenant, language } = useExtensionContext()
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)

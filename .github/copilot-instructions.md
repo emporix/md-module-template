@@ -17,7 +17,7 @@ Emporix Management Dashboard extension module — a Module Federation remote bui
 | `src/models/` | Domain types (`AppState`, `Product`, `ApiError`) |
 | `src/helpers/` | Pure helpers (`settings.helpers.ts` for standalone dev) |
 | `src/api/` | Emporix REST API layer (`@emporix/api-calls`, `bootstrap.ts`) |
-| `src/context/` | `DashboardProvider` — host `tenant`, `language`, `token` |
+| `src/context/` | `ExtensionProvider` — host `tenant`, `language`, `token` |
 | `src/translations/{locale}/` | i18n keys (react-i18next) |
 | `vite.config.ts` | Module Federation config, CORS, shared dependencies |
 

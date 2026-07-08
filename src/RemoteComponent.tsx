@@ -7,7 +7,7 @@ import List from './pages/List'
 import Detail from './pages/Detail'
 import { useApiCredentials } from './api/bootstrap'
 import { AppState } from './models/AppState.model'
-import { DashboardProvider } from './context/Dashboard.context'
+import { ExtensionProvider } from './context/ExtensionContext'
 import './translations/i18n'
 
 interface RemoteComponentProps {
@@ -30,7 +30,7 @@ const RemoteComponent = ({
 
   return (
     <ToastProvider>
-      <DashboardProvider appState={appState}>
+      <ExtensionProvider appState={appState}>
         <HashRouter>
           <Routes>
             <Route path="/">
@@ -40,7 +40,7 @@ const RemoteComponent = ({
             </Route>
           </Routes>
         </HashRouter>
-      </DashboardProvider>
+      </ExtensionProvider>
     </ToastProvider>
   )
 }

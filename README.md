@@ -8,6 +8,30 @@ This implementation is a simple example of a module built for most common use ca
 
 The main goal was to provide a minimal setup for a module that can be used as a starting point for more complex modules.
 
+## AppState
+
+When the module is embedded in the Management Dashboard, the host passes an `appState` prop to `RemoteComponent`. The dashboard builds this object in `ExternalModule` and forwards it through module federation (`DynamicComponent`).
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `tenant` | `string` | Current tenant identifier. |
+| `language` | `string` | UI language from the dashboard (for example `en` or `de`). |
+| `token` | `string` | JWT access token for Emporix API calls. |
+| `currency` | `Entry` | Active currency (`id`, `label`, `default`, `required`). |
+| `contentLanguage` | `string` | Content/catalog language selected in the dashboard. |
+| `user` | `User` | Logged-in user (`userId`, optional `firstName` / `lastName` / `email`, `termsAndConditions`). |
+| `onError` | `(error: unknown) => void` | Host error handler — call it when API requests fail; the dashboard uses it to re-authenticate on `401` responses. |
+| `emporixApiUrl` | `string \| null` | Base URL of the Emporix API configured in the host (`VITE_API_URL`). `null` when the host has no API URL configured. |
+
+The `emporixApiUrl` field was added in [management-dashboard#1592](https://github.com/emporix/management-dashboard/pull/1592) (COP-5905). It lets extensions use the same API endpoint as the dashboard instead of baking the URL into the remote build.
+
+### Using AppState in this template
+
+- **Type** — `src/models/AppState.model.ts` defines the subset used by this template (`tenant`, `language`, `token`). Extend it when you need additional host fields such as `emporixApiUrl`, `user`, or `currency`.
+- **Context** — `RemoteComponent` wraps routes with `ExtensionProvider`; read values via `useExtensionContext()` in pages and components.
+- **API URL** — standalone dev uses `VITE_API_URL` from `.env` (see `src/api/bootstrap.ts`). When embedded, prefer `appState.emporixApiUrl` when present and fall back to `VITE_API_URL` for local preview.
+- **Standalone dev** — `App.tsx` prompts for `tenant`, `token`, and `language` and passes them as `appState`; host-only fields are not available outside the dashboard.
+
 ## AI and code-assistant rules
 
 Coding standards come from the shared [frontend-ai-rules](https://github.com/emporix/frontend-ai-rules) package. Rules sync automatically on `npm install` via the `postinstall` script.

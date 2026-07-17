@@ -34,23 +34,17 @@ The `emporixApiUrl` field was added in [management-dashboard#1592](https://githu
 
 ## AI and code-assistant rules
 
-Coding standards come from the shared [frontend-ai-rules](https://github.com/emporix/frontend-ai-rules) package. Rules sync automatically on `npm install` via the `postinstall` script.
+Coding standards come from the shared [frontend-ai-rules](https://github.com/emporix/frontend-ai-rules) package. Generic rules and index files are **not committed** to this repository — they are downloaded and customized on `npm install` via the `postinstall` script.
 
-| Agent | Index file | Rule files |
-|-------|------------|------------|
-| **Cursor** | `.cursorrules` | `.cursor/rules/*.mdc` |
-| **GitHub Copilot** | `.github/copilot-instructions.md` | `.github/instructions/*.instructions.md` |
-| **Claude Code** | `.claude/CLAUDE.md` | `.claude/rules/*.md` |
+| Agent | Index file (generated) | Generic rules (generated) | Project rules (in repo) |
+|-------|------------------------|---------------------------|-------------------------|
+| **Cursor** | `.cursorrules` | `.cursor/rules/*.mdc` | `.cursor/rules/extension-module-template.mdc` |
+| **GitHub Copilot** | `.github/copilot-instructions.md` | `.github/instructions/*.instructions.md` | `.github/instructions/extension-module-template.instructions.md` |
+| **Claude Code** | `.claude/CLAUDE.md` | `.claude/rules/*.md` | `.claude/rules/extension-module-template.md` |
 
-**Project-specific rules** (not overwritten on sync) live in `extension-module-template.*` — overrides and template-only patterns that extend global rules.
+Run `npm install` (or `npm run sync:ai-rules`) after cloning to generate index files and generic rules locally.
 
-To re-sync global rules manually:
-
-```bash
-npm run sync:ai-rules
-```
-
-> **Note:** Synced index files and generic rule files are overwritten on install. Do not edit `00-core`, `api-data`, etc. — add project-specific rules in uniquely named files instead.
+> **Note:** Synced files are overwritten on install. Do not edit `00-core`, `api-data`, etc. — add project-specific rules in uniquely named files instead (for example `extension-module-template.*`).
 
 ## Development
 

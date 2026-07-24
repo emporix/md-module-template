@@ -34,6 +34,10 @@ Skip this rule if the project uses only GraphQL or another data layer — adapt 
 - Prefer `async`/`await` over raw promise chains in API modules.
 - Keep API functions deterministic for a given input — side effects like token refresh belong in the shared client.
 - When using React Query, SWR, or similar, put data-fetching hooks in a service/custom-hook layer; keep components thin.
+- Before adding or changing a custom API request, first check whether the endpoint is already implemented in `@emporix/api-calls`.
+- If a matching `@emporix/api-calls` method exists, ask the user whether to use that library method instead of a custom call.
+- If the user agrees, use the library method. If the user declines, continue with the custom API call.
+- If no matching `@emporix/api-calls` method exists, continue with the custom API call.
 
 ```typescript
 // src/api/products.api.ts

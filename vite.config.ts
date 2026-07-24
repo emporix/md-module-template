@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import federation from '@originjs/vite-plugin-federation'
 
+const corsOrigins = ['https://admin.emporix.io']
+
 export default defineConfig({
   plugins: [
     react(),
@@ -29,13 +31,13 @@ export default defineConfig({
   },
   server: {
     cors: {
-      origin: ['https://admin.emporix.io'],
+      origin: corsOrigins,
       credentials: true,
     },
   },
   preview: {
     cors: {
-      origin: ['https://admin.emporix.io'],
+      origin: corsOrigins,
       credentials: true,
     },
   },

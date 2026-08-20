@@ -22,6 +22,7 @@ Shared API client: `setApiCredentials` / `useApiCredentials` in `src/api/bootstr
 - `ExtensionProvider` wraps routes; read host values with `useExtensionContext()`
 - Sync language on host change: `i18n.changeLanguage(appState.language)` in `RemoteComponent`
 - Never hardcode tenant or token
+- Export `RemoteComponent` **named and default** (`export { RemoteComponent }; export default RemoteComponent`). Vite federation unwraps a default-only expose to a bare function; MD `loadRemoteModule` then reads `module.default` as `undefined` (COP-6343).
 
 ```typescript
 <ExtensionProvider appState={appState}>

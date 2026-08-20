@@ -31,6 +31,7 @@ The `emporixApiUrl` field was added in [management-dashboard#1592](https://githu
 - **Context** — `RemoteComponent` wraps routes with `ExtensionProvider`; read values via `useExtensionContext()` in pages and components.
 - **API URL** — standalone dev uses `VITE_API_URL` from `.env` (see `src/api/bootstrap.ts`). When embedded, prefer `appState.emporixApiUrl` when present and fall back to `VITE_API_URL` for local preview.
 - **Standalone dev** — `App.tsx` prompts for `tenant`, `token`, and `language` and passes them as `appState`; host-only fields are not available outside the dashboard.
+- **Federation export** — `RemoteComponent` must be exported **named and default** (`export { RemoteComponent }; export default RemoteComponent`). A default-only expose is unwrapped by Vite federation to a bare function, and Management Dashboard then fails to mount the module (COP-6343).
 
 ## AI and code-assistant rules
 

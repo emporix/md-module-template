@@ -45,4 +45,8 @@ const RemoteComponent = ({
   )
 }
 
+// Named + default so Vite federation keeps `{ default: Component }`.
+// Default-only exposes unwrap to a bare function and MD `loadRemoteModule`
+// (`module.default`) gets undefined (COP-6343).
+export { RemoteComponent }
 export default RemoteComponent

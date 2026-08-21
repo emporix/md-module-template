@@ -8,97 +8,117 @@ description: >-
 
 # MD Module Extraction
 
-> **Canonical location:** `md-extensions/.cursor/skills/md-module-extraction/` (mirror to `.claude/skills/` and `.github/skills/`; also synced in frontend-ai-rules).  
+> **Canonical location:** `md-extensions/.cursor/skills/md-module-extraction/` (this file when opened from that path).  
 > **Host wiring rules:** `management-dashboard/.cursor/rules/federated-module-wiring.mdc`  
 > **Remote rules:** `md-extensions/.cursor/rules/md-extension-migration.mdc`, `md-extension-port-validation.mdc`  
-> **Hooks:** `md-extensions/.cursor/hooks.json`
+> **Hooks:** `md-extensions/.cursor/hooks.json`  
+> Playbook: `md-extensions/docs/MODULE_MIGRATION_PLAYBOOK.md`. Copy inventory: `md-extensions/docs/REUSABLE_FROM_USERS_AND_GROUPS.md`.
 
-Step-by-step workflow for porting an MD module to `md-extensions`.
+Step-by-step workflow for porting an MD module to `md-extensions`. Full reference: [reference.md](reference.md).
 
-**Detail docs** (do not restate here — link instead):
-
-| Doc | SoT for |
-|-----|---------|
-| `docs/MODULE_MIGRATION_PLAYBOOK.md` | Policy, federation contract, AppState matrix, provider stack, QA, Firebase, decisions log |
-| `docs/REUSABLE_FROM_USERS_AND_GROUPS.md` | Tier 1/2/3 copy inventory (what to take, adapt, skip) |
-| `docs/MIGRATED_MODULES.md` | Registry of extracted remotes (update after every migration) |
-| [reference.md](reference.md) | FAQ, validation greps, anti-patterns, local dev loop |
-
-**Canonical scaffold:** clone [md-module-template](https://github.com/emporix/md-module-template) branch **`md-module-migration`**, absorb into `md-extensions/{kebab}/` (remove nested `.git`). Align Tier 1 with **all playbook-aligned remotes** in `MIGRATED_MODULES.md` (not U&G alone; not `products`; not template `master`).
-
-**Pilots so far:** see `MIGRATED_MODULES.md`.
+**Canonical scaffold:** `md-extensions/users-and-groups` (not `products`). Prefer U&G for AppState, PermissionsProvider, Tier 1 shared UI, and provider stack.
 
 ## Pre-flight
 
-1. Confirm scope: which routes **move** vs **stay** in MD; list **sibling consumers** that import the module folder.
-2. List MD files those consumers still need — cleanup must retain them (and re-home any shared i18n keys).
+1. Confirm scope: which routes **move** vs **stay** in MD (e.g. Customer Groups stay).
+2. List MD files that **staying routes still import** from the module folder — cleanup must retain those.
 3. Pick federation `name` = MD route `key` (camelCase).
-4. Pick a **unique local Vite port** (claim from `MIGRATED_MODULES.md` "Next free local port").
-5. Run audit greps (playbook §7 + below).
-6. Verify CL exports every PrimeReact / MdDataTable replacement; prefer **CL ≥ 2.2.0** for `ConfirmBox` / `BackButton` / `DateValue`.
-7. Align `@emporix/api-calls` semver with call signatures used by the module.
-8. Decide Mode A (permanent `url:`) vs Mode B (GateComponent + toggle). Prefer Mode A when there is no useful built-in fallback.
+4. Run audit greps (playbook §7 + below).
+5. Verify CL ≥ 2.0.0 exports every PrimeReact / MdDataTable replacement.
+6. Align `@emporix/api-calls` semver with call signatures used by the module.
 
 ```bash
-# Cross-module imports
+# Cross-module imports (types/components from other MD modules)
 rg "from ['\"].*modules/(?!{ThisModule})" management-dashboard/src/modules/{module}/
 
 # PrimeReact / MdDataTable inventory
 rg "from ['\"]primereact|MdDataTable|ProductDataProvider|InputField" management-dashboard/src/modules/{module}/
 
-# Sibling / i18n consumers before cleanup
-rg "from ['\"].*{module}|usersAndGroups\." management-dashboard/src --glob '!*.md'
+# Build artifacts
+find management-dashboard/src/modules/{module} -path '*/dist/*'
 ```
 
-## Phase 0 — Scaffold
+## Phase 0 — Scaffold from U&G
 
-Clone template into `md-extensions/`, absorb, rename federation `name` + ports + package. Details: playbook §1 "Scaffold starter".
+In `md-extensions/{kebab-module}/`:
 
-Key checks: `strictPort: true`, `"dev": "vite --mode dev"`, `VITE_API_URL` (not `BASE_URL`), published CL semver, no nested `.git`.
+1. Copy U&G package skeleton (vite, tsconfig, eslint, standalone shell) — **not** products.
+2. Immediately rename: `package.json` name, README title, `.env.example` comments (scrub “product list” leftovers).
+3. `vite.config.ts`: `name` = route key; expose `./RemoteComponent`; keep `cssCodeSplit: false`; share `react`, `react-dom`, `react-router`, `react-i18next`.
+4. `package.json`: pin **published** `@emporix/component-library` ≥ 2.0.0 (never `file:`); add `react-hook-form` / Testing Library if needed.
+5. Keep `.gitignore` env rules from U&G (ignore `.env` / `.env.*` with `!.env.example` / stage / prod exceptions) + `.vite`.
+6. Extend `AppState.model.ts` per playbook matrix — **never** `permissions` on AppState.
+7. Keep standalone: `App.tsx` + `settings.helpers.ts` + `main.tsx` + `index.css`.
+8. Set `VITE_API_URL` (not `VITE_API_BASE_URL`).
 
-**Scaffold parity check** — `diff -rq` vs playbook-aligned remotes; reconcile unexpected deltas before domain work.
+**Scaffold parity check** (before domain work):
 
-## Phase 1 — Tier 1 infrastructure
+```bash
+diff -rq md-extensions/users-and-groups md-extensions/{module} \
+  --exclude node_modules --exclude dist --exclude .git --exclude .vite \
+  --exclude package-lock.json
+```
 
-See `REUSABLE_FROM_USERS_AND_GROUPS.md` Tier 1 tables and `MIGRATED_MODULES.md` for source remotes. Minimum:
+Expected deltas only: package name, vite `name`, README, env comments, deleted Tier 3 domain folders. If unexpected `src/` diffs appear, reconcile before continuing.
 
-- Entire `src/components/shared/` (lean `InputField` — never MD `InputField`)
-- CL ≥ 2.2.0 → import `ConfirmBox`, `BackButton`, `DateValue`, `ProgressSpinner` directly; delete local copies
-- SCSS Modules for feature UI (no global/unscoped styles)
-- Providers, hooks, `api/bootstrap.ts`, models, `translations/*/global.ts` — see REUSABLE tables
+## Phase 1 — Tier 1 infrastructure (copy from U&G)
 
-### Promote-to-CL check (before copying shared UI)
+See `REUSABLE_FROM_USERS_AND_GROUPS.md` Tier 1. Minimum:
 
-When a UI component already lives in a prior remote:
-
-1. If CL exports it → import directly (no wrapper unless LocalizedInput-style deps).
-2. If only local remote copies exist → **ask the user**: migrate to CL now (skill `migrate-to-component-library`, Pattern A/B) or keep a local copy?
-3. Do not silently third-copy.
+- Entire `src/components/shared/` (lean `InputField` — **never** MD `InputField`)
+- Providers: Dashboard, Permissions (slim), Configuration, Sites, UIBlocker (`UIBlcoker.tsx` typo), RefreshValues
+- Hooks: `usePagination`, `useTabs`, `useCustomNavigate`, `useLocalizedValue`
+- `api/bootstrap.ts` + `hooks/api/` pattern (`useDashboardContext().tenant`)
+- Models: AppState, SessionUser, ApiError, Localized, Configuration, Site, Metadata
+- `translations/{en,de}/global.ts`
 
 ## Phase 2 — Domain port
 
-**Green-field:** copy in-scope MD pages/components/contexts only. Never copy another module's domain folders.
+- Copy **in-scope** MD pages/components/contexts/helpers/hooks only.
+- **Never copy another module’s domain folders** as a substitute for porting a *different* MD module (Tier 1 only from U&G). Same-module dry-runs may copy pilot domain but must document that shortcut and still run greps + `diff -rq`.
+- Exclude out-of-scope paths explicitly (e.g. `CustomerGroups.*`).
+- Rewrite PrimeReact / MdDataTable → `@emporix/component-library`.
+- Do **not** add `primereact` / `primeicons` deps or CSS — only `import '@emporix/component-library/styles'` at RemoteComponent.
+- Inline or copy cross-module types (e.g. `AccessControlDomainGroup`) into `src/models/`.
+- Replace `useTenant()` → `useDashboardContext().tenant`.
+- Jest → Vitest (`vi.mock`, not `jest.mock`).
+- Register feature i18n; keep flat key style if matching MD.
+- Hash-relative routes in `RemoteComponent` (`/`, `/users/:id`) — **not** host `/administration/...`.
+- Path helpers: `src/constants/paths.ts` (Hash-relative), not host absolute `BASE_PATH`.
 
-**Derived remote** (same domain, reduced scope — e.g. customer-groups from U&G): follow playbook §11. Strip leaf screens only; keep shared models/hooks; re-diff MD for subtype fields.
-
-Always: rewrite PrimeReact → CL; no `primereact` deps/CSS; replace `useTenant()` → `useDashboardContext().tenant`; Jest → Vitest; Hash-relative routes; `src/constants/paths.ts`.
+**Do not claim “identical to pilot” without `diff -rq`.** File counts alone are insufficient.
 
 ## Phase 2b — Remote wiring
 
-Provider stack (outer → inner) — see playbook §4 for full template.
+Provider stack (outer → inner):
+
+```
+ToastProvider → DashboardProvider → PermissionsProvider → ConfigurationProvider
+→ SitesProvider → UIBlockerProvider → HashRouter → ModuleShell (RefreshValues) → pages
+```
 
 Sync: `i18n.changeLanguage(appState.language)` in `RemoteComponent`.
 
 ## Phase 3 — MD host wiring (hard gate)
 
-Follow **`management-dashboard/.cursor/rules/federated-module-wiring.mdc`** (SoT for host patterns).
+Follow **`management-dashboard/.cursor/rules/federated-module-wiring.mdc`** (SoT for host patterns). Summary:
 
-| Mode | When |
-|------|------|
-| A — permanent remote | No useful built-in fallback |
-| B — toggle rollout | Parallel built-in + remote |
+| Mode | When | Pattern |
+|------|------|---------|
+| A — permanent remote | New module / no built-in fallback | `url: process.env.VITE_{MODULE}_URL` on route (like `statistics`) |
+| B — toggle rollout | Parallel built-in + remote | `GateComponent` children=ExternalModule, `fallback`=built-in + toggle `{kebab}-external-module` |
 
-Always: `VITE_{MODULE}_URL` in all MD `.env.*`; grep i18n namespace before deleting; validate federation triangle (see reference.md § Validation greps).
+Always:
+
+1. `VITE_{MODULE}_URL` in **all** MD `.env.*` → `.../assets/remoteEntry.js`
+2. Validate federation triangle:
+
+```bash
+rg "name:\s*'" md-extensions/{module}/vite.config.ts
+rg "key:\s*'{moduleKey}'" management-dashboard/src/router/module-routes.tsx
+rg "VITE_{MODULE}_URL" management-dashboard/.env*
+rg "moduleName=|{kebab}-external-module" management-dashboard/src
+```
 
 Do **not** mark Phase 3 done because the remote exists — greps must pass.
 
@@ -112,18 +132,26 @@ Plus post-port anti-pattern greps (see reference.md § Validation greps).
 
 ## Phase 5 — Cleanup (after sign-off)
 
-- Remove built-in code that only served the extracted route(s).
-- **Retain** files still imported by sibling modules.
+- Remove **employee-only** built-in code from MD.
+- **Retain** files still imported by staying routes (Customer Groups pattern).
+- Never delete the whole MD module folder if siblings share UI.
 - Delete `dist/*.js` under MD module folder.
 - Switch to ExternalModule-only if using Mode B.
 - Update playbook decisions log.
 
 ## Phase 6 — Firebase + CI (before first deploy)
 
-Create Hosting sites, register `.firebaserc` + `firebase.json`, copy workflow YAMLs, confirm lockfile resolves CL from npm. Details: playbook §9.
+1. Create Hosting sites in each Firebase project (`emporix-{module}-develop|stage` and prod).
+2. Register `.firebaserc` + `firebase.json` (CORS `*`).
+3. Copy/adapt `{module}-firebase-*.yaml` workflows from U&G.
+4. Confirm lockfile resolves CL from npm (`"link": true` to sibling path = fail).
 
 ## Phase 7 — Cross-model review + knowledge capture
 
 Bugbot + second model on full diff. Append 1–3 rows to playbook decisions log. Update this skill if steps were wrong.
 
-**Required registry update:** add/refresh row in `docs/MIGRATED_MODULES.md` + bump "Next free local port". Refresh `REUSABLE_FROM_USERS_AND_GROUPS.md` if Tier 1 inventory changed.
+**Dry-run validation tip:** Same-module dry-runs that only copy the pilot stop teaching after one clean `diff -rq` (rename/scrub only). Next cycle should either (a) re-port domain from MD **without** the pilot-domain shortcut, or (b) extract a **different** MD module. Do not keep cycling blind rsyncs of U&G.
+
+## Pilot
+
+`md-extensions/users-and-groups` — COP-5598.

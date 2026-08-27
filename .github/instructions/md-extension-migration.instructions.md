@@ -48,7 +48,7 @@ Optional: `user` (host Ory — do not fetch Ory in remote).
 ## Provider order
 
 ```
-ToastProvider → DashboardProvider → PermissionsProvider → ConfigurationProvider
+ToastProvider → ExtensionProvider → PermissionsProvider → ConfigurationProvider
 → SitesProvider → UIBlockerProvider → HashRouter → RefreshValuesProvider → pages
 ```
 
@@ -65,7 +65,7 @@ ToastProvider → DashboardProvider → PermissionsProvider → ConfigurationPro
 ## API
 
 - `VITE_API_URL` (not `VITE_API_BASE_URL`).
-- Tenant/token via `useDashboardContext()` + `api/bootstrap.ts` + `@emporix/api-calls`.
+- Tenant/token via `useExtensionContext()` + `api/bootstrap.ts` + `@emporix/api-calls`.
 
 ## Derived remotes
 

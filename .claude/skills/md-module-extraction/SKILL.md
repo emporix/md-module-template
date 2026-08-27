@@ -66,9 +66,9 @@ Expected deltas only: package name, vite `name`, README, env comments, deleted T
 See `REUSABLE_FROM_USERS_AND_GROUPS.md` Tier 1. Minimum:
 
 - Entire `src/components/shared/` (lean `InputField` — **never** MD `InputField`)
-- Providers: Dashboard, Permissions (slim), Configuration, Sites, UIBlocker (`UIBlcoker.tsx` typo), RefreshValues
+- Providers: keep template `ExtensionProvider` (do not copy U&G `DashboardProvider`); copy Permissions (slim), Configuration, Sites, UIBlocker (`UIBlcoker.tsx` typo), RefreshValues
 - Hooks: `usePagination`, `useTabs`, `useCustomNavigate`, `useLocalizedValue`
-- `api/bootstrap.ts` + `hooks/api/` pattern (`useDashboardContext().tenant`)
+- `api/bootstrap.ts` + `hooks/api/` pattern (`useExtensionContext().tenant`)
 - Models: AppState, SessionUser, ApiError, Localized, Configuration, Site, Metadata
 - `translations/{en,de}/global.ts`
 
@@ -80,7 +80,7 @@ See `REUSABLE_FROM_USERS_AND_GROUPS.md` Tier 1. Minimum:
 - Rewrite PrimeReact / MdDataTable → `@emporix/component-library`.
 - Do **not** add `primereact` / `primeicons` deps or CSS — only `import '@emporix/component-library/styles'` at RemoteComponent.
 - Inline or copy cross-module types (e.g. `AccessControlDomainGroup`) into `src/models/`.
-- Replace `useTenant()` → `useDashboardContext().tenant`.
+- Replace `useTenant()` → `useExtensionContext().tenant`.
 - Jest → Vitest (`vi.mock`, not `jest.mock`).
 - Register feature i18n; keep flat key style if matching MD.
 - Hash-relative routes in `RemoteComponent` (`/`, `/users/:id`) — **not** host `/administration/...`.
@@ -93,7 +93,7 @@ See `REUSABLE_FROM_USERS_AND_GROUPS.md` Tier 1. Minimum:
 Provider stack (outer → inner):
 
 ```
-ToastProvider → DashboardProvider → PermissionsProvider → ConfigurationProvider
+ToastProvider → ExtensionProvider → PermissionsProvider → ConfigurationProvider
 → SitesProvider → UIBlockerProvider → HashRouter → ModuleShell (RefreshValues) → pages
 ```
 

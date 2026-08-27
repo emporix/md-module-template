@@ -4,7 +4,7 @@
 
 | Tier | Port strategy | Examples |
 |------|---------------|----------|
-| Host shell | Receive via AppState / DashboardContext | tenant, token, language, onError, contentLanguage, currency |
+| Host shell | Receive via AppState / ExtensionContext | tenant, token, language, onError, contentLanguage, currency |
 | Layout composites | Copy from U&G `components/shared/` | HeaderSection, SectionBox, FormGrid, lean InputField |
 | Primitives | CL rewrite (≥ 2.0.0) | InputText, Dropdown, DataTable, Tabs, Dialog, ProgressSpinner |
 | Domain logic | Copy + adapt imports | pages, contexts, helpers |
@@ -14,7 +14,7 @@
 ## AppState FAQ
 
 **Q: Should permissions be in AppState?**  
-A: No. Port slim `PermissionsProvider` using token + tenant from DashboardContext. (Ignore products if it still passes permissions.)
+A: No. Port slim `PermissionsProvider` using token + tenant from ExtensionContext. (Ignore products if it still passes permissions.)
 
 **Q: Should the remote fetch Ory session?**  
 A: No. Host may pass optional `user` for contract compatibility only.

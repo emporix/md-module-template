@@ -2,21 +2,40 @@
 applyTo: "**/RemoteComponent.tsx,**/vite.config.ts,**/AppState.model.ts,**/src/**"
 ---
 
+
 # MD Extension Migration (remote)
 
-Playbook: `docs/MODULE_MIGRATION_PLAYBOOK.md`. Copy inventory: `docs/REUSABLE_FROM_USERS_AND_GROUPS.md`.
-**Canonical scaffold:** `md-extensions/users-and-groups` (not `products`).
+Playbook: `docs/MODULE_MIGRATION_PLAYBOOK.md` (§11–§12 for derived remotes).  
+**Registry (update every migration):** `docs/MIGRATED_MODULES.md`.  
+Copy inventory: `docs/REUSABLE_FROM_USERS_AND_GROUPS.md` (Tier 1 from all playbook-aligned remotes).  
+**PrimeReact → CL lookup:** `docs/CL_WIDGET_STATUS.md`.  
+**Skill (canonical):** `.github/skills/md-module-extraction/` (also `.cursor/skills/` / `.claude/skills/`).  
+**Host wiring:** `management-dashboard/.github/instructions/federated-module-wiring.instructions.md` (not this file).
+
+**Folder scaffold (required):** clone [md-module-template](https://github.com/emporix/md-module-template/tree/md-module-migration) branch **`md-module-migration`**:
+
+```bash
+git clone -b md-module-migration --single-branch \
+  https://github.com/emporix/md-module-template.git {kebab}
+rm -rf {kebab}/.git
+```
+
+Do **not** `cp -R` / rsync `users-and-groups`, `brands`, `returns`, or template `master`.
+
+**Tier 1 copy:** playbook-aligned remotes in `MIGRATED_MODULES.md` — not U&G alone, not `products`, not template `master`. U&G is a reference implementation, not the scaffold source.
 
 ## Federation
 
 - Vite `name` ≡ MD route `key` ≡ `ExternalModule.moduleName` (camelCase).
 - Expose `./RemoteComponent` only. Never name the remote `extension`.
 - Keep `cssCodeSplit: false`. Share `react`, `react-dom`, `react-router`, `react-i18next`.
+- Pin unique `server.port` + `preview.port` with `strictPort: true` (avoid colliding with U&G `5173`).
+- `"dev": "vite --mode dev"` so `.env.dev` loads.
 
 ## AppState
 
-Required: `tenant`, `language`, `token`, `onError`, `contentLanguage`, `currency`.
-Optional: `user` (host Ory — do not fetch Ory in remote).
+Required: `tenant`, `language`, `token`, `onError`, `contentLanguage`, `currency`.  
+Optional: `user` (host Ory — do not fetch Ory in remote).  
 **Never** put `permissions` on AppState — port `PermissionsProvider`.
 
 ## Router
@@ -24,6 +43,7 @@ Optional: `user` (host Ory — do not fetch Ory in remote).
 - `HashRouter` inside remote; host uses `BrowserRouter`.
 - Hash-relative paths (`/`, `/users/:id`) via `src/constants/paths.ts` — **not** host `/administration/...`.
 - Sync `i18n.changeLanguage(appState.language)` on host language changes.
+- Trim `entityLinkConfig` to entities this remote can actually open.
 
 ## Provider order
 
@@ -34,9 +54,12 @@ ToastProvider → DashboardProvider → PermissionsProvider → ConfigurationPro
 
 ## UI policy
 
-- Primitives: `@emporix/component-library` only (CL ≥ 2.0.0 bundles Pattern B Prime CSS).
-- Copy layout composites from U&G `components/shared/` (HeaderSection, SectionBox, FormGrid, ConfirmBox, …).
-- **Never** copy MD `InputField` (ProductDataProvider). Copy U&G lean `InputField`.
+- Primitives: `@emporix/component-library` only (CL ≥ 2.0.0 bundles Pattern B Prime CSS). Look up each MD `primereact` import in `docs/CL_WIDGET_STATUS.md` — never add `primereact` to the remote.
+- Copy layout composites from prior playbook-aligned remotes `components/shared/` (HeaderSection, SectionBox, FormGrid, lean InputField, …).
+- Prefer CL ≥ 2.2.0 for `ConfirmBox`, `BackButton`, `DateValue`, `ProgressSpinner` — **import directly**; delete local duplicates. Thin wrappers only when app deps are required (i18n / languages / config), same as `LocalizedInput`.
+- Before copying a shared UI piece already present in a prior remote, **ask the user** whether to migrate it to CL (`migrate-to-component-library` skill) instead of another local copy.
+- **SCSS Modules** for feature UI — avoid global / unscoped styles that MD global CSS can override (or that leak into the host). Minimal `index.css` shell only; no inline styles.
+- **Never** copy MD `InputField` (ProductDataProvider). Prefer CL built-in `label` / `error` props; use `FieldLabel` only when the child has no label API. Copy lean `InputField` from a prior remote only if still needed.
 - No `primereact` / `primeicons` deps or CSS in the remote — only `@emporix/component-library/styles` at entry.
 
 ## API
@@ -44,10 +67,14 @@ ToastProvider → DashboardProvider → PermissionsProvider → ConfigurationPro
 - `VITE_API_URL` (not `VITE_API_BASE_URL`).
 - Tenant/token via `useDashboardContext()` + `api/bootstrap.ts` + `@emporix/api-calls`.
 
+## Derived remotes
+
+When reducing U&G to a subtype: strip leaf screens only; keep models/hooks member tables need; **re-diff MD** for subtype-specific fields (e.g. customer `Company` / `b2b.legalEntityId`). See playbook §12.
+
 ## Host wiring
 
-Do Phase 3 in **management-dashboard** per `federated-module-wiring` (Mode A / Mode B + env matrix). Remote-only ≠ done.
+Do Phase 3 in **management-dashboard** per `federated-module-wiring` (Mode A / Mode B + env matrix + i18n re-home). Remote-only ≠ done.
 
-## Pilot
+## Pilots
 
-`users-and-groups` (COP-5598).
+See `docs/MIGRATED_MODULES.md`.

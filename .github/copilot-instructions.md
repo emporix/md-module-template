@@ -31,19 +31,28 @@ These rules are maintained centrally in the [frontend-ai-rules](https://github.c
 | `ui-components.mdc` | `ui-components.instructions.md` | `ui-components.md` | Component and page work |
 | `testing.mdc` | `testing.instructions.md` | `testing.md` | Test files |
 | `api-data.mdc` | `api-data.instructions.md` | `api-data.md` | API / service layer |
+| `npm-dependencies.mdc` | `npm-dependencies.instructions.md` | `npm-dependencies.md` | `package.json` / lockfiles — semver only; no `file:` or git URLs |
 | `performance.mdc` | `performance.instructions.md` | `performance.md` | Component performance |
 | `git-workflow.mdc` | `git-workflow.instructions.md` | `git-workflow.md` | Commits / branches |
 | `emporix-component-library.mdc` | `emporix-component-library.instructions.md` | `emporix-component-library.md` | Shared UI primitives |
 | `i18n.mdc` | `i18n.instructions.md` | `i18n.md` | Translations |
 | `primereact.mdc` | `primereact.instructions.md` | `primereact.md` | PrimeReact widgets (if applicable) |
 | `module-federation.mdc` | `module-federation.instructions.md` | `module-federation.md` | Module Federation (if applicable) |
+| `contributing-global-rules.mdc` | `contributing-global-rules.instructions.md` | `contributing-global-rules.md` | After feature work / upstream rule proposals |
+
+## Workflow Skills (from frontend-ai-rules)
+
+| Cursor | Copilot | Claude Code | Purpose |
+|--------|---------|-------------|---------|
+| `.cursor/skills/contribute-global-rule/` | `.github/skills/contribute-global-rule/` | `.claude/skills/contribute-global-rule/` | Open PR in frontend-ai-rules after approved lesson |
 
 ## Project-Specific Rules
 
 <!-- CUSTOMIZE: List rules added locally for this project -->
 | File | When loaded |
 |------|-------------|
-| `extension-module-template.mdc` | Always — overrides and template-only patterns (federation host, API auth, standalone dev) |
+| `md-extension-migration.instructions.md` | Migration work for MD→md-extensions remote extraction |
+| `extension-module-template.instructions.md` | Local extension module overrides and migration patterns |
 
 <!-- CUSTOMIZE: Replace KEY with your Jira project key -->
 **Git:** `{feature|fix|release}/{KEY}-###-kebab-description` branches, `{KEY}-### Sentence case description` commits — details in `git-workflow`.

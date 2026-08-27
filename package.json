@@ -41,7 +41,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.26",
-    "frontend-ai-rules": "git+https://github.com/emporix/frontend-ai-rules.git#master",
+    "frontend-ai-rules": "git+https://github.com/emporix/frontend-ai-rules.git#md-module-migration",
     "globals": "^15.15.0",
     "prettier": "3.5.0",
     "sass": "^1.101.0",

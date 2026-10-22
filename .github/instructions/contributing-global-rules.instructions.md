@@ -1,0 +1,65 @@
+---
+applyTo: "**/*"
+---
+
+# Contributing Global Rules
+
+Propose improvements to [frontend-ai-rules](https://github.com/emporix/frontend-ai-rules) when feature work surfaces reusable patterns — not project-specific quirks.
+
+## When to Run
+
+- After the developer's task is implemented and quality gates pass (see **`00-core`** Quality Gates).
+- When the developer asks to contribute to global rules, propose a rule improvement, or open a PR in `frontend-ai-rules`.
+
+## When to Propose
+
+Only propose an upstream change when the lesson is:
+
+- Reusable across Emporix frontends (stack, helpers, testing, API layer, UI patterns)
+- Not already covered by an existing generic rule
+- Not project-specific (domain models, one-off APIs, local folder layout)
+
+## When NOT to Propose
+
+- Trivial fixes or one-off bugs
+- Patterns that belong in project-specific rules (see README — "How to Add Project-Specific Rules")
+- Changes that only apply to this repository's domain or APIs
+
+If the lesson is valuable but project-specific, suggest adding a local rule under `.cursor/rules/` (and Copilot/Claude equivalents) instead.
+
+## Developer Prompt Template
+
+When a reusable lesson is found, show this block **before** taking any action:
+
+```markdown
+## Suggested improvement to global AI rules
+
+**Context:** [What was built and what friction or pattern was discovered]
+
+**Proposed change:** [Update existing rule, e.g. `api-data` — or new rule name]
+
+**Draft rule text:**
+[Concise bullets or section to add]
+
+**Would you like me to open a PR in `frontend-ai-rules` with this change?** (yes / no)
+```
+
+## Consent Gate
+
+- Do **not** clone, branch, commit, or open a PR without explicit developer approval.
+- If declined, optionally suggest keeping the change as a local project rule.
+- Only commit or push when the developer explicitly requests it.
+
+## Critical Constraint
+
+Never edit synced generic rule files in the consumer project for upstream contributions. Generic rules are overwritten on `npm install`. All upstream changes must happen in the `frontend-ai-rules` repository.
+
+## On Approval
+
+Follow the agent-specific workflow skill:
+
+- **Cursor:** `.cursor/skills/contribute-global-rule/SKILL.md`
+- **Copilot:** `.github/skills/contribute-global-rule/SKILL.md`
+- **Claude Code:** `.claude/skills/contribute-global-rule/SKILL.md`
+
+Every PR must update Cursor, Copilot, and Claude rule files together (see skill checklist).

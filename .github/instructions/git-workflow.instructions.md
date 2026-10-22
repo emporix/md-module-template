@@ -35,7 +35,8 @@ MD-456 Fix date picker timezone offset
 1. Run lint, typecheck, tests, and build — see **`00-core`** Quality Gates
 2. Use the project's commit skill if one exists (e.g. `.cursor/skills/commit-with-validation/SKILL.md`)
 3. Do not commit `.env`, credentials, or local-only config
-4. Only commit when explicitly requested by the user
+4. Revert temporary `file:` / `link:` local dependencies in `package.json` to published semver — see **`npm-dependencies`**
+5. Only commit when explicitly requested by the user
 
 ## Merging to master
 

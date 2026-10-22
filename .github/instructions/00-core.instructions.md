@@ -240,6 +240,7 @@ npm run build        # or build:dev / build:lib — check package.json
 6. **Readonly props** on component interfaces.
 7. **CSS Modules only** — no inline styles (see `ui-components`).
 8. **Storybook** — add or update stories when the project uses it (see `ui-components`).
+9. **Global rules feedback** — after significant feature work, check for reusable lessons that could improve global rules; if found, follow **`contributing-global-rules`** before closing the task.
 
 ## Avoid
 
